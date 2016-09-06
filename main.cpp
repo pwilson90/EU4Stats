@@ -3,10 +3,11 @@
 #include <string>
 #include <stack>
 #include <regex>
+#include <StackHelper.cpp>
 
 using namespace std;
 
-//Is the stack empty
+//Is the stack empty?
 //Signifies end of a block
 bool isBalanced(stack<char> balance){
   if(balance.empty() == true){
@@ -44,38 +45,58 @@ void makeTagFiles(string saveFile){
   ifstream gameFile;
   ofstream tagFile;
 
+  string tagBlockStart = "countries={";
+  bool countryBlock = false;
   stack<char> balance;
-  regex tagFileNameRegex("(...)\\=\\{$");
+  regex tagFileNameRegex("\\s*(...)\\=\\{");
   smatch match;
 
   gameFile.open(saveFile);
   if(gameFile.is_open()){
     while(getline(gameFile,line)){
-      if(regex_match(line, match, tagFileNameRegex)){
-        if(tagFile.is_open() == false){
-          tagFileName = "countries/" + match[1].str() + ".txt";
-          tagFile.open(tagFileName);
-          cout << "Tag Name: " << tagFileName << endl;
-        }
-      }
+      //Already writing to a tag file?
       if(tagFile.is_open()){
         tagFile << line << endl;
       }
+      //Is "country" block being entered
+      else if(line.compare(tagBlockStart) == 0){
+        countryBlock = true;
+      }
+      //Is a new tag starting?
+      else if(regex_match(line, match, tagFileNameRegex)){
+        //Check that no file is currently being worked on and
+        //the country code block is being read
+        if(countryBlock == true && tagFile.is_open() == false){
+          tagFileName = "countries/" + match[1].str() + ".txt";
+          tagFile.open(tagFileName);
+          tagFile << line << endl;
+          cout << "Tag Name: " << tagFileName << endl;
+        }
+      }
+
+      //Update bracket stack
       updateBalance(line, balance);
 
       //Ends a tagFile when true
-      if(isBalanced(balance) == true){
-        cout << "Parenthesis are balanced.\n";
+      //Stack size 1 = not in a tag file and in country block
+      if(balance.size() == 1){
         tagFile.close();
+      }
+      else if(isBalanced(balance)){
+        if(countryBlock == true){
+          countryBlock = false;
+        }
       }
     }
   }
   gameFile.close();
 }
 
+
+
 int main(int argc, char *argv[]){
 
-  string saveFile = "earlyTest.eu4";
+  string saveFile = "TestData/countries";
   makeTagFiles(saveFile);
 
   return 0;
