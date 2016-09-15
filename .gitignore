@@ -1,0 +1,8 @@
+# Ignore test files and tag files
+TestData/*
+Countries/*
+# Don't ignore readme
+!TestData/Readme.md
+!Countries/Readme.md
+# Except this file
+!.gitignore
