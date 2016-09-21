@@ -10,4 +10,4 @@ Country.o: Country.cpp
 	g++ -c -g -std=c++11 Country.cpp
 
 clean:
-	rm -r -f *.o countries/*.txt EU4Stats;
+	rm -r -f *.o Countries/*.txt EU4Stats;

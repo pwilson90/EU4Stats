@@ -2,6 +2,7 @@
 #define _Country_H
 
 #include <string>
+#include <fstream>
 
 class Country {
 
@@ -10,11 +11,11 @@ class Country {
 
     //miliTariffy values
     //Land forces
-    int infrantry = 0;
-    int calvary = 0;
-    int artillery = 0;
+    double infantry = 0;
+    double cavalry = 0;
+    double artillery = 0;
     int armyForceLimit = 0;
-    int currentArmySize = 0;
+    double armyStrength = 0;
     double maxManpower = 0;
 
     //Naval forces
@@ -24,6 +25,15 @@ class Country {
     int transport = 0;
     int navalForceLimit = 0;
     double maxSailor = 0;
+
+    //Subject Military values
+    double subjectInfantry = 0;
+    double subjectCavalry = 0;
+    double subjectArtillery = 0;
+    int subjectBigShip = 0;
+    int subjectLightShip = 0;
+    int subjectGalley = 0;
+    int subjectTransport = 0;
 
     //Score
     double adminRank = 0;
@@ -56,6 +66,10 @@ class Country {
     //Misc
     int development = 0;
 
+    //Subject info
+    std::string subjectArray[30];
+    int subjectArrayPlace = 0;
+
   public:
     //Constructors
     Country();
@@ -63,11 +77,10 @@ class Country {
 
     //Getters
     std::string getName();
-    int getInfrantry();
-    int getCalvary();
-    int getArillery();
+    double getInfantry();
+    double getCavalry();
+    double getArtillery();
     int getArmyForceLimit();
-    int getCurrentArmySize();
     double getMaxManpower();
     int getBigShip();
     int getLightShip();
@@ -101,10 +114,11 @@ class Country {
     //Setters
     void setName(std::string tag);
     void setArmyForceLimit(int limit);
-    void setCurrentArmySize(int aSize);
     void setMaxManpower(double maxMan);
+    void setSubjectArmy(double strength, std::string unitType);
     void setNavalForceLimit(int nLimit);
     void setMaxSailor(double maxSail);
+    void setSubjectNavy(int strength, std::string unitType);
     void setAdminRank(double aRank);
     void setAdminRating(double aRating);
     void setDiploRank(double dRank);
@@ -129,15 +143,28 @@ class Country {
     void setDevelopment(int devel);
 
     //Unit Counter
-    void unitCounter(int unitType, double unitStrength);
+    void armyCounter(std::string unitType, double aStrength);
+    void navyCounter(std::string unitType);
+    double armyStrengthTotal();
 
-    //Misc
-    int armyTotal();
+    //Various "total" functions
     int navyTotal();
     double scoreRatingTotal();
     double incomeTotal();
     int techTotal();
 
+    //Subject functions
+    void addSubject(std::string subject);
+
+    int getSubjectArrayCount();
+    std::string getSubjectName(int subPosition);
+    double getSubjectArmy(std::string unitType);
+    double getSubjectArmyTotal();
+    int getSubjectNavy(std::string unitType);
+    int getSubjectNavalTotal();
+
+    //Testing functions
+    void printSubjects(std::ofstream& output);
 };
 
 #endif
