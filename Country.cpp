@@ -35,7 +35,7 @@ int Country::getArmyForceLimit(){
 }
 
 double Country::getMaxManpower(){
-  return maxManpower;
+  return maxManpower*1000;
 }
 
 int Country::getBigShip(){
@@ -88,6 +88,10 @@ double Country::getMilRating(){
 
 double Country::getScoreTotal(){
   return scoreTotal;
+}
+
+double Country::getCardScore(){
+  return cardScore;
 }
 
 double Country::getTax(){
@@ -146,9 +150,22 @@ int Country::getMilTech(){
   return milTech;
 }
 
+int Country::getEmbracedInstitutions(int institution){
+  return embracedInstitutions[institution];
+}
+
 int Country::getDevelopment(){
   return development;
 }
+
+std::string Country::getSubjectType(){
+  return mySubjectType;
+}
+
+double Country::getGreatPowerScore(){
+  return greatPowerScore;
+}
+
 
 //Setter functions
 void Country::setName(std::string tag){
@@ -221,6 +238,10 @@ void Country::setScoreTotal(double sTotal){
   scoreTotal = sTotal;
 }
 
+void Country::setCardScore(double cScore){
+  cardScore = cScore;
+}
+
 void Country::setTax(double iTax){
   tax = iTax;
 }
@@ -277,8 +298,20 @@ void Country::setMilTech(int mtech){
   milTech = mtech;
 }
 
+void Country::setEmbracedInstitutions(int hasEmbraced, int institution){
+  embracedInstitutions[institution] = hasEmbraced;
+}
+
 void Country::setDevelopment(int devel){
   development = devel;
+}
+
+void Country::setSubjectType(std::string subjectType){
+  mySubjectType = subjectType;
+}
+
+void Country::setGreatPowerScore(double gpScore){
+  greatPowerScore = gpScore;
 }
 
 //Total functions
@@ -290,6 +323,7 @@ int Country::navyTotal(){
   return bigShip+lightShip+galley+transport;
 }
 
+//Worthless?
 double Country::scoreRatingTotal(){
   return adminRating+diploRating+milRating;
 }
@@ -301,6 +335,7 @@ double Country::incomeTotal(){
 int Country::techTotal(){
   return adminTech+diploTech+milTech;
 }
+
 
 //Increase respective unit count
 void Country::armyCounter(std::string unitType, double aStrength){
@@ -324,6 +359,7 @@ void Country::navyCounter(std::string unitType){
     transport += 1;
   }
 }
+
 
 //Subject functions
 //Countries tag should be added, not the txt file.
@@ -385,5 +421,15 @@ void Country::printSubjects(std::ofstream& output){
     for(int i = 0; i < subjectArrayPlace; i++){
       output << "   Subject " << i << ": " << subjectArray[i] << std::endl;
     }
+  }
+}
+
+void Country::printInstitutions(std::ofstream& output){
+  if(output.is_open()){
+    output << "Embraced Institutions: ";
+    for(int i = 0; i < 7; i++){
+      output << embracedInstitutions[i] << " ";
+    }
+    output << std::endl;
   }
 }

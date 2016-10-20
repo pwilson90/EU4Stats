@@ -43,6 +43,7 @@ class Country {
     double milRank = 0;
     double milRating = 0;
     double scoreTotal = 0;
+    double cardScore = 0;
 
     //Income
     double tax = 0;
@@ -62,13 +63,17 @@ class Country {
     int diploTech = 0;
     int milTech = 0;
     int technologyTotal = 0;
+    int embracedInstitutions[7];
 
     //Misc
     int development = 0;
+    std::string mySubjectType = "";
+    double greatPowerScore = 0;
 
     //Subject info
     std::string subjectArray[30];
     int subjectArrayPlace = 0;
+
 
   public:
     //Constructors
@@ -77,6 +82,7 @@ class Country {
 
     //Getters
     std::string getName();
+
     double getInfantry();
     double getCavalry();
     double getArtillery();
@@ -88,6 +94,7 @@ class Country {
     int getTransport();
     int getNavalForceLimit();
     double getMaxSailor();
+
     double getAdminRank();
     double getAdminRating();
     double getDiploRank();
@@ -95,6 +102,8 @@ class Country {
     double getMilRank();
     double getMilRating();
     double getScoreTotal();
+    double getCardScore();
+
     double getTax();
     double getProduction();
     double getTrade();
@@ -106,19 +115,26 @@ class Country {
     double getWarReparation();
     double getSpoilsOfWar();
     double getCondottieriIncome();
+
     int getAdminTech();
     int getDiploTech();
     int getMilTech();
+    int getEmbracedInstitutions(int institution);
+
     int getDevelopment();
+    std::string getSubjectType();
+    double getGreatPowerScore();
 
     //Setters
     void setName(std::string tag);
+
     void setArmyForceLimit(int limit);
     void setMaxManpower(double maxMan);
     void setSubjectArmy(double strength, std::string unitType);
     void setNavalForceLimit(int nLimit);
     void setMaxSailor(double maxSail);
     void setSubjectNavy(int strength, std::string unitType);
+
     void setAdminRank(double aRank);
     void setAdminRating(double aRating);
     void setDiploRank(double dRank);
@@ -126,6 +142,8 @@ class Country {
     void setMilRank(double mRank);
     void setMilRating(double mRating);
     void setScoreTotal(double sTotal);
+    void setCardScore(double cScore);
+
     void setTax(double iTax);
     void setProduction(double iProduction);
     void setTrade(double iTrade);
@@ -137,17 +155,22 @@ class Country {
     void setWarReparation(double iReparation);
     void setSpoilsOfWar(double iSpoil);
     void setCondottieriIncome(double iCondottieri);
+
     void setAdminTech(int aTech);
     void setDiploTech(int dTech);
     void setMilTech(int mTech);
+    void setEmbracedInstitutions(int embraced, int institution);
+
     void setDevelopment(int devel);
+    void setSubjectType(std::string subjectType);
+    void setGreatPowerScore(double gpScore);
 
     //Unit Counter
     void armyCounter(std::string unitType, double aStrength);
     void navyCounter(std::string unitType);
-    double armyStrengthTotal();
 
     //Various "total" functions
+    double armyStrengthTotal();
     int navyTotal();
     double scoreRatingTotal();
     double incomeTotal();
@@ -165,6 +188,7 @@ class Country {
 
     //Testing functions
     void printSubjects(std::ofstream& output);
+    void printInstitutions(std::ofstream& output);
 };
 
 #endif

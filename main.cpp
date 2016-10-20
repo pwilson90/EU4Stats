@@ -19,11 +19,64 @@ Country countriesArray[500];
 int countriesArrayCounter = 0;
 
 //Unit Arrays, store unit types
-string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", "african_clubmen", "african_hill_warfare", "african_spearmen", "african_western_franchise_warfare", "afsharid_reformed_infrantry", "algonkin_tomahawk_charge", "american_western_franchise_warfare", "anglofrench_line", "apache_guerilla", "asian_arquebusier", "asian_mass_infrantry", "asian_musketeer", "austrian_grenzer", "austrian_jaeger", "austrian_tercio", "austrian_white_coat", "aztec_gunpowdwer_warfare", "aztec_hill_warfare", "aztex_tribal_warfare", "bantu_gunpowder_warfare", "bantu_plains_warfare", "bantu_tribal_warfare", "bardiche_infantry", "bhonsle_infrantry", "british_redcoat", "british_square", "chinese_footsoldier", "chinese_longspear", "creek_arquebusier", "durrani_rifled_musketeer", "dutch_maruician", "east_asian_spearmen", "eastern_carabinier", "eastern_medieval_infantry", "eastern_militia", "ethiopian_guerilla_warfare", "ethiopian_gunpowder_warfare", "ethiopian_mountain_warfare", "french_bluecoat", "french_impulse", "gaelic_free_shooter", "gaelic_galloglaigh", "gaelic_mercenary", "germanized_pike", "halberd_infantry", "han_banner", "huron_arquebusier", "inca_mountain_warfare", "incan_axemen", "incan_guerilla_warfare", "incan_slingshots", "indian_arquebusier", "indian_footsoldier", "indian_rifle", "irish_charge", "iroquis_rifle_scout", "iroquois_rifle_scout", "italian_condotta", "japanese_archer", "japanese_footsoldier", "maharathan_guerilla_warfare", "mali_tribal_warfare", "mamluk_archer", "mamluk_duel", "maya_forest_warfare", "maya_guerilla_warfare", "maya_gunpwoder_warfare", "maya_tribal_warfare", "mesoamerican_spearmen", "mexican_guerilla_warfare", "mixed_order_infantry", "mongol_bow", "muscovite_musketeer", "muscovite_soldaty", "muslim_mass_infantry", "napoleonic_square", "native_clubmen", "native_indian_archers", "native_indian_mountain_warfare", "native_indian_tribal_warfare", "niger_kongolese_forest_warfare", "niger_kongolese_guerilla_warfare", "niger_kongolese_gunpowder_warfare", "niger_kongolese_tribal_warfare", "ottoman_azab", "ottoman_janissary", "ottomon_new_model", "ottomon_nizami_cedid", "ottomon_reformed_janissary", "ottomon_sekban", "ottomon_yaya", "persian_footsoldier", "persian_rifle", "persian_shamshir", "peruvian_guerilla_warfare", "polish_musketeer", "polish_tercio", "prussian_drill", "prussian_frederickian", "pueblo_ambush", "rajput_musketeers", "reformed_asian_musketeer", "reformed_mughal_musketeer", "reformed_steppe_rifles", "reformed_westernized_incan", "russian_green_coat", "russian_mass", "russian_pretrine", "saxon_infantry", "scottish_highlander", "sikh_hit_and_run", "songhai_tribal_warfare", "south_american_arqebusier", "south_american_forest_warfare", "south_american_gunpowder_warfare", "south_american_reformed_gunpowder_warfare", "south_american_spearmen", "south_american_warfare", "south_indian_musketeer", "spanish_tercio", "steppe_footmen", "steppe_infantry", "steppe_musketeers", "steppe_raiders", "steppe_rifles", "swedish_caroline", "swedish_gustavian", "swiss_landsknechten", "tipu_sultan_rocket", "tofongshis_musketeer", "western_longbow", "western_medieval_infantry", "western_men_at_arms", "westernized_adal", "westernized_aztec", "westernized_bantu", "westernized_ethiopian", "westernized_incan", "westernized_mayan", "westernized_niger_kongolese", "westernized_south_american", "westernized_zapotec", "zapotec_gunpowder_warfare", "zapotec_plains_warfare", "zapotec_tribal_warfare", "zulu_chest_and_horns", "african_abyssinian_cavalry", "african_abyssinian_light_cavalry", "african_cuirassier", "african_dragoon", "african_hussar", "african_mandelaku", "african_mossi_horsemen", "african_somali_cavalry", "african_swarm", "african_tuareg_cavalry", "afsharid_reformed", "ali_bey_reformed_infrantry", "asian_charge_cavalry", "austrian_hussar", "bhonsle_cavalry", "british_hussar", "central_american_dragoon", "central_american_horsemen", "central_american_hussar", "central_american_rifle_cavalry", "central_american_swarm", "chevauchee", "chinese_dragoon", "chinese_steppe", "commanche_swarm", "druzhina_cavalry", "durrani_dragoon", "durrani_swivel", "east_mongolian_steppe", "eastern_bow", "eastern_knights", "eastern_skimisher", "eastern_uhlan", "french_carabinier", "french_caracolle", "french_cuirassier", "french_dragoon", "hungarian_hussar", "indian_archers", "indian_elephant", "indian_shock_cavalry", "japanese_samurai", "maharathan_cavalry", "mamluk_cavalry_charge", "mamluk_musket_charge", "manchu_banner", "mongol_bow", "mongol_mansabdar", "mongol_steppe", "mongol_swarm", "mughal_musketeer", "muscovite_caracolle", "muscovite_cossack", "muslim_cavalry_archers", "muslim_dragoon", "napoleonic_lancers", "native_indian_horsemen", "north_american_dragoon", "north_american_horsemen", "north_american_hussar", "north_american_rifle_cavalry", "north_american_swarm", "open_order_cavalry", "ottomon_lancer", "ottomon_musellem", "ottomon_reformed_spahi", "ottomon_spahi", "ottomon_timariot", "ottomon_toprakli_dragoon", "ottomon_toprakli_hit_and_run", "persian_cavalry_charge", "polish_hussar", "polish_winged_hussar", "prussian_uhlan", "qizilbash_cavalry", "rajput_hill_fighters", "reformed_asian_cavalry", "reformed_manchu_rifle", "reformed_mughal_mansabdar", "russian_cossack", "russian_cuirassier", "russian_lancer", "shaybani", "shwarze_reiter", "sikh_rifle", "sioux_dragoon", "slavic_stradioti", "south_american_dragoon", "south_american_horsemen", "south_american_hussar", "south_american_rifle_cavalry", "south_american_swarm", "steppe_cavalry", "steppe_lancers", "steppe_mounted_raiders", "steppe_riders", "steppe_uhlans", "swedish_arme_blanche", "swedish_gallop", "tartar_cossack", "topchis_artillery", "western_medieval_knights", "zaporoghian_coassack", "chambered_demi_cannon", "coehorn_mortar", "culverin", "flying_battery", "houfnice", "large_cast_bronze_mortar", "large_cast_iron_bombard", "leather_cannon", "pedrero", "royal_mortar", "small_cast_iron_bombard", "swivel_cannon"};
-string navalUnitArray[25] = {"carrack", "early_carrack", "galleon", "threedecker", "twodecker", "wargalleon", "barque", "caravel", "early_frigate", "frigate", "great_frigate", "heavy_frigate", "archipelago_frigate", "chebeck", "galiot", "galleass", "galley", "merchantman", "war_galley", "brig", "cog", "eastindiaman", "flute", "trabakul"};
+string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", "african_clubmen", "african_hill_warfare",
+                            "african_spearmen", "african_western_franchise_warfare", "afsharid_reformed_infrantry",
+                            "algonkin_tomahawk_charge", "american_western_franchise_warfare", "anglofrench_line",
+                            "apache_guerilla", "asian_arquebusier", "asian_mass_infrantry", "asian_musketeer",
+                            "austrian_grenzer", "austrian_jaeger", "austrian_tercio", "austrian_white_coat", "aztec_gunpowdwer_warfare",
+                            "aztec_hill_warfare", "aztex_tribal_warfare", "bantu_gunpowder_warfare", "bantu_plains_warfare",
+                            "bantu_tribal_warfare", "bardiche_infantry", "bhonsle_infrantry", "british_redcoat", "british_square",
+                            "chinese_footsoldier", "chinese_longspear", "creek_arquebusier", "durrani_rifled_musketeer", "dutch_maruician",
+                            "east_asian_spearmen", "eastern_carabinier", "eastern_medieval_infantry", "eastern_militia", "ethiopian_guerilla_warfare",
+                            "ethiopian_gunpowder_warfare", "ethiopian_mountain_warfare", "french_bluecoat", "french_impulse", "gaelic_free_shooter",
+                            "gaelic_galloglaigh", "gaelic_mercenary", "germanized_pike", "halberd_infantry", "han_banner", "huron_arquebusier",
+                            "inca_mountain_warfare", "incan_axemen", "incan_guerilla_warfare", "incan_slingshots", "indian_arquebusier", "indian_footsoldier",
+                            "indian_rifle", "irish_charge", "iroquis_rifle_scout", "iroquois_rifle_scout", "italian_condotta", "japanese_archer",
+                            "japanese_footsoldier", "maharathan_guerilla_warfare", "mali_tribal_warfare", "mamluk_archer", "mamluk_duel",
+                            "maya_forest_warfare", "maya_guerilla_warfare", "maya_gunpwoder_warfare", "maya_tribal_warfare", "mesoamerican_spearmen",
+                            "mexican_guerilla_warfare", "mixed_order_infantry", "mongol_bow", "muscovite_musketeer", "muscovite_soldaty",
+                            "muslim_mass_infantry", "napoleonic_square", "native_clubmen", "native_indian_archers", "native_indian_mountain_warfare",
+                            "native_indian_tribal_warfare", "niger_kongolese_forest_warfare", "niger_kongolese_guerilla_warfare",
+                            "niger_kongolese_gunpowder_warfare", "niger_kongolese_tribal_warfare", "ottoman_azab", "ottoman_janissary", "ottomon_new_model",
+                            "ottomon_nizami_cedid", "ottomon_reformed_janissary", "ottomon_sekban", "ottomon_yaya", "persian_footsoldier", "persian_rifle",
+                            "persian_shamshir", "peruvian_guerilla_warfare", "polish_musketeer", "polish_tercio", "prussian_drill", "prussian_frederickian",
+                            "pueblo_ambush", "rajput_musketeers", "reformed_asian_musketeer", "reformed_mughal_musketeer", "reformed_steppe_rifles",
+                            "reformed_westernized_incan", "russian_green_coat", "russian_mass", "russian_pretrine", "saxon_infantry", "scottish_highlander",
+                            "sikh_hit_and_run", "songhai_tribal_warfare", "south_american_arqebusier", "south_american_forest_warfare",
+                            "south_american_gunpowder_warfare", "south_american_reformed_gunpowder_warfare", "south_american_spearmen", "south_american_warfare",
+                            "south_indian_musketeer", "spanish_tercio", "steppe_footmen", "steppe_infantry", "steppe_musketeers", "steppe_raiders",
+                            "steppe_rifles", "swedish_caroline", "swedish_gustavian", "swiss_landsknechten", "tipu_sultan_rocket", "tofongshis_musketeer",
+                            "western_longbow", "western_medieval_infantry", "western_men_at_arms", "westernized_adal", "westernized_aztec", "westernized_bantu",
+                            "westernized_ethiopian", "westernized_incan", "westernized_mayan", "westernized_niger_kongolese", "westernized_south_american",
+                            "westernized_zapotec", "zapotec_gunpowder_warfare", "zapotec_plains_warfare", "zapotec_tribal_warfare", "zulu_chest_and_horns",
+                            "african_abyssinian_cavalry", "african_abyssinian_light_cavalry", "african_cuirassier", "african_dragoon", "african_hussar",
+                            "african_mandelaku", "african_mossi_horsemen", "african_somali_cavalry", "african_swarm", "african_tuareg_cavalry", "afsharid_reformed",
+                            "ali_bey_reformed_infrantry", "asian_charge_cavalry", "austrian_hussar", "bhonsle_cavalry", "british_hussar", "central_american_dragoon",
+                            "central_american_horsemen", "central_american_hussar", "central_american_rifle_cavalry", "central_american_swarm", "chevauchee",
+                            "chinese_dragoon", "chinese_steppe", "commanche_swarm", "druzhina_cavalry", "durrani_dragoon", "durrani_swivel", "east_mongolian_steppe",
+                            "eastern_bow", "eastern_knights", "eastern_skimisher", "eastern_uhlan", "french_carabinier", "french_caracolle", "french_cuirassier",
+                            "french_dragoon", "hungarian_hussar", "indian_archers", "indian_elephant", "indian_shock_cavalry", "japanese_samurai", "maharathan_cavalry",
+                            "mamluk_cavalry_charge", "mamluk_musket_charge", "manchu_banner", "mongol_bow", "mongol_mansabdar", "mongol_steppe", "mongol_swarm",
+                            "mughal_musketeer", "muscovite_caracolle", "muscovite_cossack", "muslim_cavalry_archers", "muslim_dragoon", "napoleonic_lancers",
+                            "native_indian_horsemen", "north_american_dragoon", "north_american_horsemen", "north_american_hussar", "north_american_rifle_cavalry",
+                            "north_american_swarm", "open_order_cavalry", "ottomon_lancer", "ottomon_musellem", "ottomon_reformed_spahi", "ottomon_spahi",
+                            "ottomon_timariot", "ottomon_toprakli_dragoon", "ottomon_toprakli_hit_and_run", "persian_cavalry_charge", "polish_hussar", "polish_winged_hussar",
+                            "prussian_uhlan", "qizilbash_cavalry", "rajput_hill_fighters", "reformed_asian_cavalry", "reformed_manchu_rifle", "reformed_mughal_mansabdar",
+                            "russian_cossack", "russian_cuirassier", "russian_lancer", "shaybani", "shwarze_reiter", "sikh_rifle", "sioux_dragoon", "slavic_stradioti",
+                            "south_american_dragoon", "south_american_horsemen", "south_american_hussar", "south_american_rifle_cavalry", "south_american_swarm",
+                            "steppe_cavalry", "steppe_lancers", "steppe_mounted_raiders", "steppe_riders", "steppe_uhlans", "swedish_arme_blanche", "swedish_gallop",
+                            "tartar_cossack", "topchis_artillery", "western_medieval_knights", "zaporoghian_coassack", "chambered_demi_cannon", "coehorn_mortar", "culverin",
+                            "flying_battery", "houfnice", "large_cast_bronze_mortar", "large_cast_iron_bombard", "leather_cannon", "pedrero", "royal_mortar", "small_cast_iron_bombard",
+                            "swivel_cannon"};
+
+string navalUnitArray[25] = {"carrack", "early_carrack", "galleon", "threedecker", "twodecker", "wargalleon", "barque", "caravel", "early_frigate", "frigate", "great_frigate",
+                            "heavy_frigate", "archipelago_frigate", "chebeck", "galiot", "galleass", "galley", "merchantman", "war_galley", "brig", "cog", "eastindiaman", "flute", "trabakul"};
 
 int landUnitArraySize = 264;
 int navalUnitArraySize = 25;
+
+//Institution tech malus
+double institutionMalus[7];
 
 //These functions are taken from cplusplus.com
 std::string& trim_right_inplace(std::string& s, const std::string& delimiters = " \f\n\r\t\v" )
@@ -108,8 +161,6 @@ void updatePlayerArray(ifstream& gameFile, string line, stack<char>& balance){
   smatch match;
 
   while(!balance.empty() && getline(gameFile,line)){
-    //Technically can overflow array but
-    //shouldn't with current game specifications.
     if(regex_match(line, match, tagName)){
       playerArray[playerArrayCounter] = match[1].str();
       playerArrayCounter++;
@@ -119,13 +170,30 @@ void updatePlayerArray(ifstream& gameFile, string line, stack<char>& balance){
   }
 }
 
+// void updateInstitutionPenalties(ifstream& tagFile, string line, stack<char>& balance){
+//   regex malusValue("([0-9]+.[0-9]{3})");
+//   smatch match;
+//
+//   if(tagFile.is_open()){
+//     while(balance.size() > 0 && getline(tagFile, line)){
+//       trim_inplace(line);
+//
+//       for(int i = 0; i < 7; i++){
+//         regex_search(line, match, malusValue);
+//         //institutionMalus[i] = stod(match[1].str());
+//         line = match.suffix().str();
+//       }
+//     }
+//   }
+// }
+
 void parseGameFile(string saveFile){
   string line;
   ifstream gameFile;
 
-  //Move into String folder later.
   string playerNations = "players_countries={";
   string tagBlockStart = "countries={";
+  string institutionPenalties = "institutions_penalties={";
 
   //Stack to keep paranthesis balanced
   stack<char> balance;
@@ -145,6 +213,10 @@ void parseGameFile(string saveFile){
       else if(line.compare(tagBlockStart) == 0){
         makeTagFiles(gameFile, line, balance);
       }
+      //set current institution tech penalties
+      // else if(line.compare(institutionPenalties) == 0){
+      //   updateInstitutionPenalties(gameFile, line, balance);
+      // }
     }
   }
   gameFile.close();
@@ -289,6 +361,62 @@ void updateCountryArmy(ifstream& tagFile, string line, int arrPlacement, stack<c
   }
 }
 
+void updateCountryShipType(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance){
+  string shipType;
+  bool foundType = false;
+
+  regex unitType("\\s*type=\"(.*)\"");
+  smatch match;
+
+  if(tagFile.is_open()){
+    while(balance.size() > 2 && getline(tagFile, line)){
+      if(regex_match(line, match, unitType)){
+        for(int i = 0; i < navalUnitArraySize; i++){
+
+          //bigShips is 0-5
+          //lightShips is 6-11
+          //Galley 12-18
+          //Transports 19-23, as of patch 1.17.x
+          if(match[1].str().compare(navalUnitArray[i]) == 0 && i < 6){
+            shipType = "bigShip";
+            foundType = true;
+            break;
+          } else if(match[1].str().compare(navalUnitArray[i]) == 0 && i > 5 && i < 12){
+            shipType = "lightShip";
+            foundType = true;
+            break;
+          } else if(match[1].str().compare(navalUnitArray[i]) && i > 11 && i < 19){
+            shipType= "galley";
+            foundType = true;
+            break;
+          } else if(match[1].str().compare(navalUnitArray[i]) && i > 18){
+            shipType= "transport";
+            foundType = true;
+            break;
+          }
+        }
+      }
+
+      updateBalance(line, balance);
+    }
+  }
+  countriesArray[arrPlacement].navyCounter(shipType);
+}
+
+void updateCountryNavy(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance){
+  string ship = "ship={";
+
+  if(tagFile.is_open()){
+    while(balance.size() > 1 && getline(tagFile, line)){
+      trim_inplace(line);
+      updateBalance(line, balance);
+      if(line.compare(ship) == 0){
+        updateCountryShipType(tagFile, line, arrPlacement, balance);
+      }
+    }
+  }
+}
+
 void updateCountrySubject(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance){
   regex tag("\"([A-Z]{3})\"");
   smatch match;
@@ -345,6 +473,29 @@ void updateCountryDevelopment(ifstream& tagFile, int dev, int arrPlacement, stac
   countriesArray[arrPlacement].setDevelopment(dev);
 }
 
+void updateCountryGPStatus(ifstream& tagFile, double gpScore, int arrPlacement, stack<char>& balance){
+  countriesArray[arrPlacement].setGreatPowerScore(gpScore);
+}
+
+void updateCountryInstitution(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance){
+  regex embracedValue("([0-9])");
+  smatch match;
+
+  if(tagFile.is_open()){
+    getline(tagFile, line);
+    trim_inplace(line);
+    updateBalance(line, balance);
+
+    for(int i = 0; i < 7; i++){
+      regex_search(line, match, embracedValue);
+      countriesArray[arrPlacement].setEmbracedInstitutions(stoi(match[1].str()), i);
+      line = match.suffix().str();
+    }
+    getline(tagFile, line);
+    updateBalance(line, balance);
+  }
+}
+
 //Country initializers
 //Input tag must be a .txt
 void countryUpdate(string tag, int arrPlacement){
@@ -357,12 +508,16 @@ void countryUpdate(string tag, int arrPlacement){
   string ledgerIncome = "ledger={";
   string scoreRank = "score_rating={";
   string army = "army={";
+  string navy = "navy={";
   string subject = "subjects={";
+  string institution = "institutions={";
 
   regex development ("\\s*raw_development=([0-9]+)\\.[0-9]{3}");
   regex maxManpower ("\\s*max_manpower=([0-9]+\\.[0-9]{3})");
   regex maxSailor ("\\s*max_sailors=([0-9]+\\.[0-9]{3})");
   regex score ("\\s*score=([0-9]+\\.[0-9]{3})");
+  regex cardScore ("\\s*card_score=([0-9]+\\.[0-9]{3})");
+  regex gpStatus("\\s*great_power_score=([0-9]+\\.[0-9]{3})");
   smatch match;
 
   //Stack to keep paranthesis balanced
@@ -401,10 +556,17 @@ void countryUpdate(string tag, int arrPlacement){
         //Updates a tag's subject array and creates the subjects object.
         updateCountrySubject(tagFile, line, arrPlacement, balance);
         updateCountrySubjectValues(arrPlacement);
+      } else if(line.compare(navy) == 0){
+        updateCountryNavy(tagFile, line, arrPlacement, balance);
+      } else if(regex_match(line, match, gpStatus)){
+         updateCountryGPStatus(tagFile, stod(match[1].str()), arrPlacement, balance);
+      } else if(regex_match(line, match, cardScore)){
+         countriesArray[arrPlacement].setCardScore(stod(match[1].str()));
+      } else if(line.compare(institution) == 0){
+        updateCountryInstitution(tagFile, line, arrPlacement, balance);
       }
     }
   }
-  //cout << endl;
   tagFile.close();
 }
 
@@ -422,9 +584,14 @@ void printCountry(int i, ofstream& output){
     output << "Dip Tech: " << countriesArray[i].getDiploTech() << endl;
     output << "Mil Tech: " << countriesArray[i].getMilTech() << endl;
     output << "Tech Total: " << countriesArray[i].techTotal() << endl;
-    output << "Development: " << countriesArray[i].getDevelopment() << endl;
-    output << "Max Manpower: " << countriesArray[i].getMaxManpower() << endl;
-    output << "Max Sailor: " << countriesArray[i].getMaxSailor() << endl;
+    countriesArray[i].printInstitutions(output);
+    output << endl;
+
+    output << "Administration Rating: " << countriesArray[i].getAdminRating() << endl;
+    output << "Diplomatic Rating: " << countriesArray[i].getDiploRating() << endl;
+    output << "Military Rating: " << countriesArray[i].getMilRating() << endl;
+    output << "Score Total: " << countriesArray[i].getScoreTotal() << endl << endl;
+
     output << "Taxation Income: " << countriesArray[i].getTax() << endl;
     output << "Production Income: " << countriesArray[i].getProduction() << endl;
     output << "Trade Income: " << countriesArray[i].getTrade() << endl;
@@ -436,26 +603,36 @@ void printCountry(int i, ofstream& output){
     output << "War Reparations Income: " << countriesArray[i].getWarReparation() << endl;
     output << "Spoils of War Income: " << countriesArray[i].getSpoilsOfWar() << endl;
     output << "Condottieri Income: " << countriesArray[i].getCondottieriIncome() << endl;
-    output << "Total Income: " << countriesArray[i].incomeTotal() << endl;
-    output << "Administration Rating: " << countriesArray[i].getAdminRating() << endl;
-    output << "Diplomatic Rating: " << countriesArray[i].getDiploRating() << endl;
-    output << "Military Rating: " << countriesArray[i].getMilRating() << endl;
+    output << "Total Income: " << countriesArray[i].incomeTotal() << endl << endl;
+
     output << "Infantry Amount: " << countriesArray[i].getInfantry() << endl;
     output << "Cavalry Amount: " << countriesArray[i].getCavalry() << endl;
     output << "Artillery Amount: " << countriesArray[i].getArtillery() << endl;
     output << "Army Strength Total: " << countriesArray[i].armyStrengthTotal() << endl;
-    output << countriesArray[i].getName() << " subjects: " << endl;
-    countriesArray[i].printSubjects(output);
     output << "Subject Infantry: " << countriesArray[i].getSubjectArmy("infantry") << endl;
     output << "Subject Cavalry: " << countriesArray[i].getSubjectArmy("cavalry") << endl;
     output << "Subject Artillery: " << countriesArray[i].getSubjectArmy("artillery") << endl;
     output << "Subject Army Total: " << countriesArray[i].getSubjectArmyTotal() << endl;
-    output << "Subject Big Ships: " << countriesArray[i].getSubjectNavy("bigShip") << endl;
+    output << "Max Manpower: " << countriesArray[i].getMaxManpower() << endl << endl;
+
+    output << "Heavy Ship Amount: " << countriesArray[i].getBigShip() << endl;
+    output << "Light Ship Amount: " << countriesArray[i].getLightShip() << endl;
+    output << "Galley Amount: " << countriesArray[i].getGalley() << endl;
+    output << "Transport Amount: " << countriesArray[i].getTransport() << endl;
+    output << "Naval Strength Total: " << countriesArray[i].navyTotal() << endl;
+    output << "Subject Heavy Ships: " << countriesArray[i].getSubjectNavy("bigShip") << endl;
     output << "Subject Light Ships: " << countriesArray[i].getSubjectNavy("lightShip") << endl;
     output << "Subject Galleys: " << countriesArray[i].getSubjectNavy("galley") << endl;
     output << "Subject Transports: " << countriesArray[i].getSubjectNavy("transport") << endl;
     output << "Subject Navy Total: " << countriesArray[i].getSubjectNavalTotal() << endl;
-    output << endl;
+    output << "Max Sailor: " << countriesArray[i].getMaxSailor() << endl << endl;
+
+    output << "Development: " << countriesArray[i].getDevelopment() << endl;
+    output << "Great Power Score: " << countriesArray[i].getGreatPowerScore() << endl << endl;
+
+    output << countriesArray[i].getName() << " subjects: " << endl;
+    countriesArray[i].printSubjects(output);
+    output << endl << endl;
   }
 }
 
@@ -479,14 +656,13 @@ void printPlayers(){
 
 int main(int argc, char *argv[]){
 
-  string saveFile = "TestData/testFile.eu4";
+  string saveFile = "TestData/mp_Ethiopia1466_06_22.eu4";
   parseGameFile(saveFile);
 
   //For testing, Prints out arrays
   fillCountryData();
   cout << endl;
   printCountries();
-  cout << endl;
   //printPlayers();
 
   return 0;
