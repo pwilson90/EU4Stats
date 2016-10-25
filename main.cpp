@@ -37,8 +37,8 @@ string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", 
                             "mexican_guerilla_warfare", "mixed_order_infantry", "mongol_bow", "muscovite_musketeer", "muscovite_soldaty",
                             "muslim_mass_infantry", "napoleonic_square", "native_clubmen", "native_indian_archers", "native_indian_mountain_warfare",
                             "native_indian_tribal_warfare", "niger_kongolese_forest_warfare", "niger_kongolese_guerilla_warfare",
-                            "niger_kongolese_gunpowder_warfare", "niger_kongolese_tribal_warfare", "ottoman_azab", "ottoman_janissary", "ottomon_new_model",
-                            "ottomon_nizami_cedid", "ottomon_reformed_janissary", "ottomon_sekban", "ottomon_yaya", "persian_footsoldier", "persian_rifle",
+                            "niger_kongolese_gunpowder_warfare", "niger_kongolese_tribal_warfare", "ottoman_azab", "ottoman_janissary", "ottoman_new_model",
+                            "ottoman_nizami_cedid", "ottoman_reformed_janissary", "ottoman_sekban", "ottoman_yaya", "persian_footsoldier", "persian_rifle",
                             "persian_shamshir", "peruvian_guerilla_warfare", "polish_musketeer", "polish_tercio", "prussian_drill", "prussian_frederickian",
                             "pueblo_ambush", "rajput_musketeers", "reformed_asian_musketeer", "reformed_mughal_musketeer", "reformed_steppe_rifles",
                             "reformed_westernized_incan", "russian_green_coat", "russian_mass", "russian_pretrine", "saxon_infantry", "scottish_highlander",
@@ -59,8 +59,8 @@ string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", 
                             "mamluk_cavalry_charge", "mamluk_musket_charge", "manchu_banner", "mongol_bow", "mongol_mansabdar", "mongol_steppe", "mongol_swarm",
                             "mughal_musketeer", "muscovite_caracolle", "muscovite_cossack", "muslim_cavalry_archers", "muslim_dragoon", "napoleonic_lancers",
                             "native_indian_horsemen", "north_american_dragoon", "north_american_horsemen", "north_american_hussar", "north_american_rifle_cavalry",
-                            "north_american_swarm", "open_order_cavalry", "ottomon_lancer", "ottomon_musellem", "ottomon_reformed_spahi", "ottomon_spahi",
-                            "ottomon_timariot", "ottomon_toprakli_dragoon", "ottomon_toprakli_hit_and_run", "persian_cavalry_charge", "polish_hussar", "polish_winged_hussar",
+                            "north_american_swarm", "open_order_cavalry", "ottoman_lancer", "ottoman_musellem", "ottoman_reformed_spahi", "ottoman_spahi",
+                            "ottoman_timariot", "ottoman_toprakli_dragoon", "ottoman_toprakli_hit_and_run", "persian_cavalry_charge", "polish_hussar", "polish_winged_hussar",
                             "prussian_uhlan", "qizilbash_cavalry", "rajput_hill_fighters", "reformed_asian_cavalry", "reformed_manchu_rifle", "reformed_mughal_mansabdar",
                             "russian_cossack", "russian_cuirassier", "russian_lancer", "shaybani", "shwarze_reiter", "sikh_rifle", "sioux_dragoon", "slavic_stradioti",
                             "south_american_dragoon", "south_american_horsemen", "south_american_hussar", "south_american_rifle_cavalry", "south_american_swarm",
@@ -70,7 +70,7 @@ string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", 
                             "swivel_cannon"};
 
 string navalUnitArray[25] = {"carrack", "early_carrack", "galleon", "threedecker", "twodecker", "wargalleon", "barque", "caravel", "early_frigate", "frigate", "great_frigate",
-                            "heavy_frigate", "archipelago_frigate", "chebeck", "galiot", "galleass", "galley", "merchantman", "war_galley", "brig", "cog", "eastindiaman", "flute", "trabakul"};
+                            "heavy_frigate", "archipelago_frigate", "chebeck", "galiot", "galleass", "galley", "war_galley", "merchantman", "brig", "cog", "eastindiaman", "flute", "trabakul"};
 
 int landUnitArraySize = 264;
 int navalUnitArraySize = 25;
@@ -170,22 +170,27 @@ void updatePlayerArray(ifstream& gameFile, string line, stack<char>& balance){
   }
 }
 
-// void updateInstitutionPenalties(ifstream& tagFile, string line, stack<char>& balance){
-//   regex malusValue("([0-9]+.[0-9]{3})");
-//   smatch match;
-//
-//   if(tagFile.is_open()){
-//     while(balance.size() > 0 && getline(tagFile, line)){
-//       trim_inplace(line);
-//
-//       for(int i = 0; i < 7; i++){
-//         regex_search(line, match, malusValue);
-//         //institutionMalus[i] = stod(match[1].str());
-//         line = match.suffix().str();
-//       }
-//     }
-//   }
-// }
+void updateInstitutionPenalties(ifstream& tagFile, string line, stack<char>& balance){
+  regex malusValue("([0-9]+.[0-9]{3})");
+  smatch match;
+
+  if(tagFile.is_open()){
+    //gets institution penalties index
+    getline(tagFile, line);
+    trim_inplace(line);
+    updateBalance(line, balance);
+
+    for(int i = 0; i < 7; i++){
+      regex_search(line, match, malusValue);
+      institutionMalus[i] = stod(match[1].str());
+      line = match.suffix().str();
+    }
+
+    //gets final bracket
+    getline(tagFile, line);
+    updateBalance(line, balance);
+  }
+}
 
 void parseGameFile(string saveFile){
   string line;
@@ -214,9 +219,9 @@ void parseGameFile(string saveFile){
         makeTagFiles(gameFile, line, balance);
       }
       //set current institution tech penalties
-      // else if(line.compare(institutionPenalties) == 0){
-      //   updateInstitutionPenalties(gameFile, line, balance);
-      // }
+      else if(line.compare(institutionPenalties) == 0){
+        updateInstitutionPenalties(gameFile, line, balance);
+      }
     }
   }
   gameFile.close();
@@ -320,10 +325,9 @@ void updateCountryRegiment(ifstream& tagFile, string line, int arrPlacement, sta
     while(balance.size() > 2 && getline(tagFile, line)){
       if(regex_match(line, match, unitType)){
         for(int i = 0; i < landUnitArraySize; i++){
-
-          //Infantry is 0-147
-          //Calvary is 148-251
-          //Artillery 252-263, as of patch 1.17.x
+          //Infantry is index 0-147
+          //Calvary is index 148-251
+          //Artillery is index 252-263, as of patch 1.17.x
           if(match[1].str().compare(landUnitArray[i]) == 0 && i < 148){
             armyType = "infantry";
             foundType = true;
@@ -332,7 +336,7 @@ void updateCountryRegiment(ifstream& tagFile, string line, int arrPlacement, sta
             armyType = "cavalry";
             foundType = true;
             break;
-          } else if(match[1].str().compare(landUnitArray[i]) && i > 252){
+          } else if(match[1].str().compare(landUnitArray[i]) == 0 && i >= 252){
             armyType= "artillery";
             foundType = true;
             break;
@@ -375,21 +379,21 @@ void updateCountryShipType(ifstream& tagFile, string line, int arrPlacement, sta
 
           //bigShips is 0-5
           //lightShips is 6-11
-          //Galley 12-18
-          //Transports 19-23, as of patch 1.17.x
+          //Galley 12-17
+          //Transports 18-23, as of patch 1.17.x
           if(match[1].str().compare(navalUnitArray[i]) == 0 && i < 6){
             shipType = "bigShip";
             foundType = true;
             break;
-          } else if(match[1].str().compare(navalUnitArray[i]) == 0 && i > 5 && i < 12){
+          } else if(match[1].str().compare(navalUnitArray[i]) == 0 && i >= 6 && i < 12){
             shipType = "lightShip";
             foundType = true;
             break;
-          } else if(match[1].str().compare(navalUnitArray[i]) && i > 11 && i < 19){
+          } else if(match[1].str().compare(navalUnitArray[i]) == 0 && i >= 12 && i < 19){
             shipType= "galley";
             foundType = true;
             break;
-          } else if(match[1].str().compare(navalUnitArray[i]) && i > 18){
+          } else if(match[1].str().compare(navalUnitArray[i]) == 0 && i >= 18){
             shipType= "transport";
             foundType = true;
             break;
@@ -654,9 +658,17 @@ void printPlayers(){
   }
 }
 
+void printInsitutionPenalties(){
+  cout << "Institution Penalties: ";
+  for(int i = 0; i < 7; i++){
+    cout << institutionMalus[i] << " ";
+  }
+  cout << endl << endl;
+}
+
 int main(int argc, char *argv[]){
 
-  string saveFile = "TestData/mp_Ethiopia1466_06_22.eu4";
+  string saveFile = "TestData/mp_Ethiopia1493_10_25.eu4";
   parseGameFile(saveFile);
 
   //For testing, Prints out arrays
@@ -664,6 +676,7 @@ int main(int argc, char *argv[]){
   cout << endl;
   printCountries();
   //printPlayers();
+  //printInsitutionPenalties();
 
   return 0;
 }
