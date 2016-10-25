@@ -7,6 +7,7 @@
 class Country {
 
   private:
+    //saved as the TAG not TAG.txt
     std::string name;
 
     //miliTariffy values

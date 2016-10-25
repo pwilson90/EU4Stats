@@ -2,6 +2,8 @@
 TestData/*
 Countries/*
 *.swp
+*.0
+EU4Stats
 
 # Don't ignore readme
 !TestData/Readme.md

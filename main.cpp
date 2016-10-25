@@ -15,7 +15,7 @@ string playerArray[32];
 int playerArrayCounter = 0;
 
 //stores country objects.
-Country countriesArray[500];
+Country countriesArray[1000];
 int countriesArrayCounter = 0;
 
 //Unit Arrays, store unit types
@@ -78,7 +78,9 @@ int navalUnitArraySize = 25;
 //Institution tech malus
 double institutionMalus[7];
 
-//These functions are taken from cplusplus.com
+
+
+//Trim functions are from cplusplus.com
 std::string& trim_right_inplace(std::string& s, const std::string& delimiters = " \f\n\r\t\v" )
 {
   return s.erase( s.find_last_not_of( delimiters ) + 1 );
@@ -116,8 +118,66 @@ void updateBalance(string line, stack<char>& balance){
   }
 }
 
-//Inside Country block.
-//Parse into Tag files
+//quicksort country array
+int partition(Country *arr, const int left, const int right) {
+    const int mid = left + ((right - left) / 2);
+    const string pivot = arr[mid].getName();
+    // move the mid point value to the front.
+    swap(arr[mid],arr[left]);
+    int i = left + 1;
+    int j = right;
+    while (i <= j) {
+        while(i <= j && arr[i].getName() <= pivot) {
+            i++;
+        }
+
+        while(i <= j && arr[j].getName() > pivot) {
+            j--;
+        }
+
+        if (i < j) {
+            std::swap(arr[i], arr[j]);
+        }
+    }
+    std::swap(arr[i - 1],arr[left]);
+    return i - 1;
+}
+
+void quicksort(Country *arr, const int left, const int right, const int sz){
+
+    if (left >= right) {
+        return;
+    }
+
+    int part = partition(arr, left, right);
+    //std::cout << "QSC:" << left << "," << right << " part=" << part << "\n";
+
+    quicksort(arr, left, part - 1, sz);
+    quicksort(arr, part + 1, right, sz);
+}
+
+//Custom search by a countries tag
+//Returns the index of said country
+int binarySearch(Country *arr, int first, int last, string tag){
+  int index;
+  if( first > last){
+    index = -1;
+  } else {
+    int mid = first + ((last - first)/2);
+
+    if(tag.compare(countriesArray[mid].getName()) == 0){
+      index = mid;
+    } else if(tag.compare(countriesArray[mid].getName()) < 0){
+      index = binarySearch(arr, first, mid-1, tag);
+    } else {
+      index = binarySearch(arr, mid+1, last, tag);
+    }
+  }
+
+  return index;
+}
+
+//Parse inside of country block into tag files
 void makeTagFiles(ifstream& gameFile, string line, stack<char>& balance){
   string tagFileName;
   ofstream tagFile;
@@ -325,6 +385,7 @@ void updateCountryRegiment(ifstream& tagFile, string line, int arrPlacement, sta
     while(balance.size() > 2 && getline(tagFile, line)){
       if(regex_match(line, match, unitType)){
         for(int i = 0; i < landUnitArraySize; i++){
+
           //Infantry is index 0-147
           //Calvary is index 148-251
           //Artillery is index 252-263, as of patch 1.17.x
@@ -432,7 +493,8 @@ void updateCountrySubject(ifstream& tagFile, string line, int arrPlacement, stac
       if(regex_match(line, match, tag)){
         countriesArray[arrPlacement].addSubject(match[1].str());
         countryUpdate(match[1].str(), countriesArrayCounter);
-        countriesArrayCounter++;
+        //countriesArrayCounter++;
+        //quicksort(countriesArray, 0, countriesArrayCounter-1, countriesArrayCounter-1);
       }
     }
   }
@@ -486,6 +548,7 @@ void updateCountryInstitution(ifstream& tagFile, string line, int arrPlacement, 
   smatch match;
 
   if(tagFile.is_open()){
+    //gets institution numbers
     getline(tagFile, line);
     trim_inplace(line);
     updateBalance(line, balance);
@@ -495,6 +558,7 @@ void updateCountryInstitution(ifstream& tagFile, string line, int arrPlacement, 
       countriesArray[arrPlacement].setEmbracedInstitutions(stoi(match[1].str()), i);
       line = match.suffix().str();
     }
+    //pulls final bracket
     getline(tagFile, line);
     updateBalance(line, balance);
   }
@@ -528,7 +592,7 @@ void countryUpdate(string tag, int arrPlacement){
   stack<char> balance;
 
   countriesArray[arrPlacement].setName(tag.substr(0,3));
-  //countriesArrayCounter++;
+  countriesArrayCounter++;
 
   tagFile.open(file);
   if(tagFile.is_open()){
@@ -560,6 +624,7 @@ void countryUpdate(string tag, int arrPlacement){
         //Updates a tag's subject array and creates the subjects object.
         updateCountrySubject(tagFile, line, arrPlacement, balance);
         updateCountrySubjectValues(arrPlacement);
+        arrPlacement = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag);
       } else if(line.compare(navy) == 0){
         updateCountryNavy(tagFile, line, arrPlacement, balance);
       } else if(regex_match(line, match, gpStatus)){
@@ -572,83 +637,99 @@ void countryUpdate(string tag, int arrPlacement){
     }
   }
   tagFile.close();
+
+  //Sort newly create object into proper place in the array
+  quicksort(countriesArray, 0, countriesArrayCounter-1, countriesArrayCounter-1);
 }
 
-void fillCountryData(){
-  countriesArrayCounter = playerArrayCounter;
-  for(int i = 0; i < playerArrayCounter; i++){
-    countryUpdate(playerArray[i], i);
-  }
-}
 
-void printCountry(int i, ofstream& output){
+
+void printCountry( ofstream& output, int index){
   if(output.is_open()){
-    output << "Name: " << countriesArray[i].getName() << endl;
-    output << "Adm Tech: " << countriesArray[i].getAdminTech() << endl;
-    output << "Dip Tech: " << countriesArray[i].getDiploTech() << endl;
-    output << "Mil Tech: " << countriesArray[i].getMilTech() << endl;
-    output << "Tech Total: " << countriesArray[i].techTotal() << endl;
-    countriesArray[i].printInstitutions(output);
+    output << "Name: " << countriesArray[index].getName() << endl;
+    output << "Administration Rating: " << countriesArray[index].getAdminRating() << endl;
+    output << "Diplomatic Rating: " << countriesArray[index].getDiploRating() << endl;
+    output << "Military Rating: " << countriesArray[index].getMilRating() << endl;
+    output << "Card Total: " << countriesArray[index].getCardScore() << endl;
+    output << "Score Total: " << countriesArray[index].getScoreTotal() << endl << endl;
+
+    output << "Taxation Income: " << countriesArray[index].getTax() << endl;
+    output << "Production Income: " << countriesArray[index].getProduction() << endl;
+    output << "Trade Income: " << countriesArray[index].getTrade() << endl;
+    output << "Gold Income: " << countriesArray[index].getGold() << endl;
+    output << "Tariff Income: " << countriesArray[index].getTariff() << endl;
+    output << "Vassal Income: " << countriesArray[index].getVassalIncome() << endl;
+    output << "Harbor Fees Income: " << countriesArray[index].getHarborFees() << endl;
+    output << "Subsidies Income: " << countriesArray[index].getSubsidies() << endl;
+    output << "War Reparations Income: " << countriesArray[index].getWarReparation() << endl;
+    output << "Spoils of War Income: " << countriesArray[index].getSpoilsOfWar() << endl;
+    output << "Condottieri Income: " << countriesArray[index].getCondottieriIncome() << endl;
+    output << "Total Income: " << countriesArray[index].incomeTotal() << endl << endl;
+
+    output << "Adm Tech: " << countriesArray[index].getAdminTech() << endl;
+    output << "Dip Tech: " << countriesArray[index].getDiploTech() << endl;
+    output << "Mil Tech: " << countriesArray[index].getMilTech() << endl;
+    output << "Tech Total: " << countriesArray[index].techTotal() << endl;
+    countriesArray[index].printInstitutions(output);
     output << endl;
 
-    output << "Administration Rating: " << countriesArray[i].getAdminRating() << endl;
-    output << "Diplomatic Rating: " << countriesArray[i].getDiploRating() << endl;
-    output << "Military Rating: " << countriesArray[i].getMilRating() << endl;
-    output << "Score Total: " << countriesArray[i].getScoreTotal() << endl << endl;
+    output << "Infantry Amount: " << countriesArray[index].getInfantry() << endl;
+    output << "Cavalry Amount: " << countriesArray[index].getCavalry() << endl;
+    output << "Artillery Amount: " << countriesArray[index].getArtillery() << endl;
+    output << "Subject Infantry: " << countriesArray[index].getSubjectArmy("infantry") << endl;
+    output << "Subject Cavalry: " << countriesArray[index].getSubjectArmy("cavalry") << endl;
+    output << "Subject Artillery: " << countriesArray[index].getSubjectArmy("artillery") << endl;
+    output << "Army Strength Total: " << countriesArray[index].armyStrengthTotal() << endl;
+    output << "Subject Army Total: " << countriesArray[index].getSubjectArmyTotal() << endl;
+    output << "Max Manpower: " << countriesArray[index].getMaxManpower() << endl << endl;
 
-    output << "Taxation Income: " << countriesArray[i].getTax() << endl;
-    output << "Production Income: " << countriesArray[i].getProduction() << endl;
-    output << "Trade Income: " << countriesArray[i].getTrade() << endl;
-    output << "Gold Income: " << countriesArray[i].getGold() << endl;
-    output << "Tariff Income: " << countriesArray[i].getTariff() << endl;
-    output << "Vassal Income: " << countriesArray[i].getVassalIncome() << endl;
-    output << "Harbor Fees Income: " << countriesArray[i].getHarborFees() << endl;
-    output << "Subsidies Income: " << countriesArray[i].getSubsidies() << endl;
-    output << "War Reparations Income: " << countriesArray[i].getWarReparation() << endl;
-    output << "Spoils of War Income: " << countriesArray[i].getSpoilsOfWar() << endl;
-    output << "Condottieri Income: " << countriesArray[i].getCondottieriIncome() << endl;
-    output << "Total Income: " << countriesArray[i].incomeTotal() << endl << endl;
+    output << "Heavy Ship Amount: " << countriesArray[index].getBigShip() << endl;
+    output << "Light Ship Amount: " << countriesArray[index].getLightShip() << endl;
+    output << "Galley Amount: " << countriesArray[index].getGalley() << endl;
+    output << "Transport Amount: " << countriesArray[index].getTransport() << endl;
+    output << "Subject Heavy Ships: " << countriesArray[index].getSubjectNavy("bigShip") << endl;
+    output << "Subject Light Ships: " << countriesArray[index].getSubjectNavy("lightShip") << endl;
+    output << "Subject Galleys: " << countriesArray[index].getSubjectNavy("galley") << endl;
+    output << "Subject Transports: " << countriesArray[index].getSubjectNavy("transport") << endl;
+    output << "Naval Strength Total: " << countriesArray[index].navyTotal() << endl;
+    output << "Subject Navy Total: " << countriesArray[index].getSubjectNavalTotal() << endl;
+    output << "Max Sailor: " << countriesArray[index].getMaxSailor() << endl << endl;
 
-    output << "Infantry Amount: " << countriesArray[i].getInfantry() << endl;
-    output << "Cavalry Amount: " << countriesArray[i].getCavalry() << endl;
-    output << "Artillery Amount: " << countriesArray[i].getArtillery() << endl;
-    output << "Army Strength Total: " << countriesArray[i].armyStrengthTotal() << endl;
-    output << "Subject Infantry: " << countriesArray[i].getSubjectArmy("infantry") << endl;
-    output << "Subject Cavalry: " << countriesArray[i].getSubjectArmy("cavalry") << endl;
-    output << "Subject Artillery: " << countriesArray[i].getSubjectArmy("artillery") << endl;
-    output << "Subject Army Total: " << countriesArray[i].getSubjectArmyTotal() << endl;
-    output << "Max Manpower: " << countriesArray[i].getMaxManpower() << endl << endl;
+    output << "Development: " << countriesArray[index].getDevelopment() << endl;
+    output << "Great Power Score: " << countriesArray[index].getGreatPowerScore() << endl << endl;
 
-    output << "Heavy Ship Amount: " << countriesArray[i].getBigShip() << endl;
-    output << "Light Ship Amount: " << countriesArray[i].getLightShip() << endl;
-    output << "Galley Amount: " << countriesArray[i].getGalley() << endl;
-    output << "Transport Amount: " << countriesArray[i].getTransport() << endl;
-    output << "Naval Strength Total: " << countriesArray[i].navyTotal() << endl;
-    output << "Subject Heavy Ships: " << countriesArray[i].getSubjectNavy("bigShip") << endl;
-    output << "Subject Light Ships: " << countriesArray[i].getSubjectNavy("lightShip") << endl;
-    output << "Subject Galleys: " << countriesArray[i].getSubjectNavy("galley") << endl;
-    output << "Subject Transports: " << countriesArray[i].getSubjectNavy("transport") << endl;
-    output << "Subject Navy Total: " << countriesArray[i].getSubjectNavalTotal() << endl;
-    output << "Max Sailor: " << countriesArray[i].getMaxSailor() << endl << endl;
-
-    output << "Development: " << countriesArray[i].getDevelopment() << endl;
-    output << "Great Power Score: " << countriesArray[i].getGreatPowerScore() << endl << endl;
-
-    output << countriesArray[i].getName() << " subjects: " << endl;
-    countriesArray[i].printSubjects(output);
+    output << countriesArray[index].getName() << " subjects: " << endl;
+    countriesArray[index].printSubjects(output);
     output << endl << endl;
   }
 }
 
+void printSpecifiedCountry(string tag){
+  int index = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag);
+  ofstream output;
+
+  //If the tag object is not yet made make it.
+  if(index == -1){
+    countryUpdate(tag, countriesArrayCounter);
+    int index = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag);
+  }
+  output.open("TestData/specifiedOutput.txt");
+  if(output.is_open()){
+    printCountry(output, index);
+  }
+  output.close();
+}
+
 //Prints out all country object information
-void printCountries(){
+void printAllCountries(){
   ofstream output;
   output.open("TestData/output.txt");
   if(output.is_open()){
     for(int i = 0; i < countriesArrayCounter; i ++){
-      printCountry(i, output);
+      printCountry(output, i);
     }
   }
+  output.close();
 }
 
 //for Testing, prints out Array of players
@@ -666,17 +747,84 @@ void printInsitutionPenalties(){
   cout << endl << endl;
 }
 
+void printCountriesArrayOrder(){
+  cout << "Country order: ";
+  for(int i = 0; i < countriesArrayCounter; i++){
+    cout << countriesArray[i].getName() << " ";
+  }
+  cout << endl;
+}
+
+void fillCountryData(){
+  //countriesArrayCounter = playerArrayCounter;
+  for(int i = 0; i < playerArrayCounter; i++){
+    countryUpdate(playerArray[i], countriesArrayCounter);
+  }
+}
+
 int main(int argc, char *argv[]){
 
   string saveFile = "TestData/mp_Ethiopia1493_10_25.eu4";
   parseGameFile(saveFile);
 
-  //For testing, Prints out arrays
+  //Fills country data
   fillCountryData();
-  cout << endl;
-  printCountries();
-  //printPlayers();
-  //printInsitutionPenalties();
+
+  int choice = -1;
+  int stop = 0;
+  while(choice != stop){
+    cout << "1: Print specified country data.\n"
+         << "2: Print all countries data\n"
+         << "3: Print countries order\n"
+         << "4: Print amount of country objects made\n"
+         << "5: Print players\n"
+         << "6: Print current institution penalties\n"
+         << "0: Exit Program\n";
+    cin >> choice;
+    switch(choice){
+      case(1): {
+        string tag;
+        cout << "What country's information would you like to see?\n";
+        cin >> tag;
+        cout << "you entered: " << tag << endl;
+        printSpecifiedCountry(tag);
+        break;
+      }
+      case(2): {
+        cout << "Printing all country data\n";
+        //Prints all countries data to file
+        printAllCountries();
+        break;
+      }
+      case(3):{
+        printCountriesArrayOrder();
+        cout << endl;
+        // cout << "ETH located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "ETH") << endl;
+        // cout << "ENG located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "ENG") << endl;
+        // cout << "PAP located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "PAP") << endl;
+        // cout << "MOS located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "MOS") << endl;
+        // cout << "HOL located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "HOL") << endl;
+        // cout << "TUR located at: " << binarySearch(countriesArray, 0, countriesArrayCounter-1, "TUR") << endl;
+       break;
+      }
+      case(4):{
+        cout << "countriesArrayCounter: " << countriesArrayCounter << endl;
+        break;
+      }
+      case(5):{
+        printPlayers();
+        break;
+      }
+      case(6):{
+        printInsitutionPenalties();
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+    cout << endl;
+  }
 
   return 0;
 }
