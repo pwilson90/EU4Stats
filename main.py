@@ -1,17 +1,21 @@
-import country.py
+import sys
+import os
+import country
 from collections import deque
 from typing import Dict, Any
+from enum import Enum
 
 # python refactor
 
 balance: deque()
 
 # Dict of nations to players. [Tag, playerName]
-players: Dict[str, str] = {}
+players: dict[str, str] = {}
 
-# Dict of nations to their country information
+# Dict of nations to their country information. <Tags, Country>
 # @todo: need to convert country.py to a class and use that as the secondary object here.
-countries: Dict[str, Country] = {}
+# countries: Dict[str, Country] = {}
+countries: dict[str, country] = {}
 
 # Checks to see if there is an bracket or paranthesis, the adds/removes from the stack as necessary.
 def updateBalance(file_string: str) -> None:
@@ -31,718 +35,346 @@ def updateBalance(file_string: str) -> None:
 
     i += 1
 
-# @todo: moveForwardALineInFile needs to be modified to actually be a line in the file
+# @todo: moveForwardALineInFile needs to be modified to actually be a line in the file <- wrong, actually just pass in a string, do your thing, then return. The main method will handle moving between strings.
 # This reads through the 'player_countries' section of a save file.
 # assumes that each line contains a single item, in the order of "player_name" -> "tag"
-def updatePlayerArray()
+def updatePlayerArray():
   check_for_player = 0
   player_name: str
   tag_regex = "[A-Za-z]{1}[A-Za-z0-9]{2}\"$"
-  while (balance.count != 0 and moveForwardALineInFile)
+  while (balance.count != 0 and moveForwardALineInFile):
     if check_for_player % 2 == 0:
       # @todo: updateBalance() needs arguments.
       updateBalance()
       player_name = moveForwardALineInFile
-    else
+    else:
       tag = re.search(tag_regex, moveForwardALineInFile)
       if tag:
         players.update([tag, player_names])
 
-def main(argv)
+# Get'em started
+def main(argv):
   saveFileName = sys.argv[1]
 
-  if os.path.exists(saveFileName):
-    saveFile = open(saveFileName, 'r')
-  else:
-    print("Failed to open save file")
-
-  # @todo: need to end the method and close the file.
-
-# Parse inside of country block into tag files
-#  def makeTagFiles(game_file: str, file_string: str) -> None
- #   str tag_filename
-
-##void makeTagFiles(ifstream& gameFile, string line, stack<char>& balance)
- ## string tagFileName
-  ##ofstream tagFile
-##
- ## regex tagFileNameRegex("^\\s*([A-Za-z0-9]3)=\\$")
-  ##smatch match
-##
- ## if(gameFile.is_open())
-  ##  while(!balance.empty() and getline(gameFile,line))
-     # Already writing to a tag file?
-    ##  if(tagFile.is_open())
-     ##   tagFile << line << endl
-      ##
-      # Is a new tag starting?
-      ##else if(regex_match(line, match, tagFileNameRegex))
-       # Check that no file is currently being worked on and
-        # the country code block is being read
-        ##if(tagFile.is_open() == false)
-         ## tagFileName = "Countries/" + match[1].str() + ".txt"
-          ##tagFile.open(tagFileName)
-          ##tagFile << line << endl
-##
- ##     # Update bracket stack
-  ##    updateBalance(line, balance)
-##
- ##     # Ends a tagFile when true
-  ##    # Stack size 1 = not in a tag file and in country block
-   ##   if(balance.size() == 1)
-    ##    tagFile.close()
-     ##  else if(balance.empty())
-      ##  break
-
-# Fix stuff below
-# Make a namespace for everything until Countries initializers
-
-//stores country objects.
-Country countriesArray[1000]
-
-//Unit Arrays, store unit types
-string landUnitArray[264] = {"adal_guerilla_warfare", "adal_gunpowder_warfare", "african_clubmen", "african_hill_warfare",
-                            "african_spearmen", "african_western_franchise_warfare", "afsharid_reformed_infrantry",
-                            "algonkin_tomahawk_charge", "american_western_franchise_warfare", "anglofrench_line",
-                            "apache_guerilla", "asian_arquebusier", "asian_mass_infrantry", "asian_musketeer",
-                            "austrian_grenzer", "austrian_jaeger", "austrian_tercio", "austrian_white_coat", "aztec_gunpowdwer_warfare",
-                            "aztec_hill_warfare", "aztex_tribal_warfare", "bantu_gunpowder_warfare", "bantu_plains_warfare",
-                            "bantu_tribal_warfare", "bardiche_infantry", "bhonsle_infrantry", "british_redcoat", "british_square",
-                            "chinese_footsoldier", "chinese_longspear", "creek_arquebusier", "durrani_rifled_musketeer", "dutch_maruician",
-                            "east_asian_spearmen", "eastern_carabinier", "eastern_medieval_infantry", "eastern_militia", "ethiopian_guerilla_warfare",
-                            "ethiopian_gunpowder_warfare", "ethiopian_mountain_warfare", "french_bluecoat", "french_impulse", "gaelic_free_shooter",
-                            "gaelic_galloglaigh", "gaelic_mercenary", "germanized_pike", "halberd_infantry", "han_banner", "huron_arquebusier",
-                            "inca_mountain_warfare", "incan_axemen", "incan_guerilla_warfare", "incan_slingshots", "indian_arquebusier", "indian_footsoldier",
-                            "indian_rifle", "irish_charge", "iroquis_rifle_scout", "iroquois_rifle_scout", "italian_condotta", "japanese_archer",
-                            "japanese_footsoldier", "maharathan_guerilla_warfare", "mali_tribal_warfare", "mamluk_archer", "mamluk_duel",
-                            "maya_forest_warfare", "maya_guerilla_warfare", "maya_gunpwoder_warfare", "maya_tribal_warfare", "mesoamerican_spearmen",
-                            "mexican_guerilla_warfare", "mixed_order_infantry", "mongol_bow", "muscovite_musketeer", "muscovite_soldaty",
-                            "muslim_mass_infantry", "napoleonic_square", "native_clubmen", "native_indian_archers", "native_indian_mountain_warfare",
-                            "native_indian_tribal_warfare", "niger_kongolese_forest_warfare", "niger_kongolese_guerilla_warfare",
-                            "niger_kongolese_gunpowder_warfare", "niger_kongolese_tribal_warfare", "ottoman_azab", "ottoman_janissary", "ottoman_new_model",
-                            "ottoman_nizami_cedid", "ottoman_reformed_janissary", "ottoman_sekban", "ottoman_yaya", "persian_footsoldier", "persian_rifle",
-                            "persian_shamshir", "peruvian_guerilla_warfare", "polish_musketeer", "polish_tercio", "prussian_drill", "prussian_frederickian",
-                            "pueblo_ambush", "rajput_musketeers", "reformed_asian_musketeer", "reformed_mughal_musketeer", "reformed_steppe_rifles",
-                            "reformed_westernized_incan", "russian_green_coat", "russian_mass", "russian_pretrine", "saxon_infantry", "scottish_highlander",
-                            "sikh_hit_and_run", "songhai_tribal_warfare", "south_american_arqebusier", "south_american_forest_warfare",
-                            "south_american_gunpowder_warfare", "south_american_reformed_gunpowder_warfare", "south_american_spearmen", "south_american_warfare",
-                            "south_indian_musketeer", "spanish_tercio", "steppe_footmen", "steppe_infantry", "steppe_musketeers", "steppe_raiders",
-                            "steppe_rifles", "swedish_caroline", "swedish_gustavian", "swiss_landsknechten", "tipu_sultan_rocket", "tofongshis_musketeer",
-                            "western_longbow", "western_medieval_infantry", "western_men_at_arms", "westernized_adal", "westernized_aztec", "westernized_bantu",
-                            "westernized_ethiopian", "westernized_incan", "westernized_mayan", "westernized_niger_kongolese", "westernized_south_american",
-                            "westernized_zapotec", "zapotec_gunpowder_warfare", "zapotec_plains_warfare", "zapotec_tribal_warfare", "zulu_chest_and_horns",
-                            "african_abyssinian_cavalry", "african_abyssinian_light_cavalry", "african_cuirassier", "african_dragoon", "african_hussar",
-                            "african_mandelaku", "african_mossi_horsemen", "african_somali_cavalry", "african_swarm", "african_tuareg_cavalry", "afsharid_reformed",
-                            "ali_bey_reformed_infrantry", "asian_charge_cavalry", "austrian_hussar", "bhonsle_cavalry", "british_hussar", "central_american_dragoon",
-                            "central_american_horsemen", "central_american_hussar", "central_american_rifle_cavalry", "central_american_swarm", "chevauchee",
-                            "chinese_dragoon", "chinese_steppe", "commanche_swarm", "druzhina_cavalry", "durrani_dragoon", "durrani_swivel", "east_mongolian_steppe",
-                            "eastern_bow", "eastern_knights", "eastern_skimisher", "eastern_uhlan", "french_carabinier", "french_caracolle", "french_cuirassier",
-                            "french_dragoon", "hungarian_hussar", "indian_archers", "indian_elephant", "indian_shock_cavalry", "japanese_samurai", "maharathan_cavalry",
-                            "mamluk_cavalry_charge", "mamluk_musket_charge", "manchu_banner", "mongol_bow", "mongol_mansabdar", "mongol_steppe", "mongol_swarm",
-                            "mughal_musketeer", "muscovite_caracolle", "muscovite_cossack", "muslim_cavalry_archers", "muslim_dragoon", "napoleonic_lancers",
-                            "native_indian_horsemen", "north_american_dragoon", "north_american_horsemen", "north_american_hussar", "north_american_rifle_cavalry",
-                            "north_american_swarm", "open_order_cavalry", "ottoman_lancer", "ottoman_musellem", "ottoman_reformed_spahi", "ottoman_spahi",
-                            "ottoman_timariot", "ottoman_toprakli_dragoon", "ottoman_toprakli_hit_and_run", "persian_cavalry_charge", "polish_hussar", "polish_winged_hussar",
-                            "prussian_uhlan", "qizilbash_cavalry", "rajput_hill_fighters", "reformed_asian_cavalry", "reformed_manchu_rifle", "reformed_mughal_mansabdar",
-                            "russian_cossack", "russian_cuirassier", "russian_lancer", "shaybani", "shwarze_reiter", "sikh_rifle", "sioux_dragoon", "slavic_stradioti",
-                            "south_american_dragoon", "south_american_horsemen", "south_american_hussar", "south_american_rifle_cavalry", "south_american_swarm",
-                            "steppe_cavalry", "steppe_lancers", "steppe_mounted_raiders", "steppe_riders", "steppe_uhlans", "swedish_arme_blanche", "swedish_gallop",
-                            "tartar_cossack", "topchis_artillery", "western_medieval_knights", "zaporoghian_coassack", "chambered_demi_cannon", "coehorn_mortar", "culverin",
-                            "flying_battery", "houfnice", "large_cast_bronze_mortar", "large_cast_iron_bombard", "leather_cannon", "pedrero", "royal_mortar", "small_cast_iron_bombard",
-                            "swivel_cannon"}
-
-string navalUnitArray[25] = {"carrack", "early_carrack", "galleon", "threedecker", "twodecker", "wargalleon", "barque", "caravel", "early_frigate", "frigate", "great_frigate",
-                            "heavy_frigate", "archipelago_frigate", "chebeck", "galiot", "galleass", "galley", "war_galley", "merchantman", "brig", "cog", "eastindiaman", "flute", "trabakul"}
-
-int landUnitArraySize = 264
-int navalUnitArraySize = 25
-
-//Institution tech malus
-double institutionMalus[7]
-
-//quicksort country array
-int partition(Country *arr, const int left, const int right) {
-    const int mid = left + ((right - left) / 2)
-    const string pivot = arr[mid].getName()
-    // move the mid point value to the front.
-    swap(arr[mid],arr[left])
-    int i = left + 1
-    int j = right
-    while (i <= j) {
-        while(i <= j && arr[i].getName() <= pivot) {
-            i++
-        }
-
-        while(i <= j && arr[j].getName() > pivot) {
-            j--
-        }
-
-        if (i < j) {
-            std::swap(arr[i], arr[j])
-        }
-    }
-    std::swap(arr[i - 1],arr[left])
-    return i - 1
-}
-
-void quicksort(Country *arr, const int left, const int right, const int sz){
-
-    if (left >= right) {
-        return
-    }
-
-    int part = partition(arr, left, right)
-    //std::cout << "QSC:" << left << "," << right << " part=" << part << "\n"
-
-    quicksort(arr, left, part - 1, sz)
-    quicksort(arr, part + 1, right, sz)
-}
-
-//Custom search by a countries tag
-//Returns the index of said country
-int binarySearch(Country *arr, int first, int last, string tag){
-  int index
-  if( first > last){
-    index = -1
-  } else {
-    int mid = first + ((last - first)/2)
-
-    if(tag.compare(countriesArray[mid].getName()) == 0){
-      index = mid
-    } else if(tag.compare(countriesArray[mid].getName()) < 0){
-      index = binarySearch(arr, first, mid-1, tag)
-    } else {
-      index = binarySearch(arr, mid+1, last, tag)
-    }
-  }
-
-  return index
-}
-
-void updateInstitutionPenalties(ifstream& tagFile, string line, stack<char>& balance)
-  regex malusValue("([0-9]+.[0-9]3)")
-  smatch match
-
-  if(tagFile.is_open())
-    # gets institution penalties index
-    getline(tagFile, line)
-    trim_inplace(line)
-    updateBalance(line, balance)
-
-    for(int i = 0 i < 7 i++)
-      regex_search(line, match, malusValue)
-      institutionMalus[i] = stod(match[1].str())
-      line = match.suffix().str()
-    
-
-    # gets final bracket
-    getline(tagFile, line)
-    updateBalance(line, balance)
+  if not os.path.isfile(saveFileName):
+    print("File not found at {}".format(saveFileName))
+    sys.exit()
   
-
-
-void parseGameFile(string saveFile)
-  string line
-  ifstream gameFile
-
-  string playerNations = "players_countries="
-  string tagBlockStart = "countries="
-  string institutionPenalties = "institutions_penalties="
-
-  # Stack to keep paranthesis balanced
-  stack<char> balance
-
-  gameFile.open(saveFile)
-  if(gameFile.is_open())
-    while(getline(gameFile,line))
-      trim_inplace(line)
-      # Update bracket stack
-      updateBalance(line, balance)
-
-      # Gets players for the game
-      if (line.compare(playerNations) == 0)
-        updatePlayerArray(gameFile, line, balance)
-      
-      # Is "country" block being entered
-      else if(line.compare(tagBlockStart) == 0)
-        makeTagFiles(gameFile, line, balance)
-      
-      # set current institution tech penalties
-      else if(line.compare(institutionPenalties) == 0)
-        updateInstitutionPenalties(gameFile, line, balance)
-      
-    
-  
-  gameFile.close()
-
-
-void updateCountryTech(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  regex techLevels("\\s*(adm|mil|dip)_tech=([1-9]+)")
-  smatch match
-
-  if(tagFile.is_open())
-    while(balance.size() > 1 and getline(tagFile, line))
-      if(regex_match(line, match, techLevels))
-        if(match[1].str().compare("adm") == 0)
-          countriesArray[arrPlacement].setAdminTech(stoi(match[2].str()))
-         else if(match[1].str().compare("dip") == 0)
-          countriesArray[arrPlacement].setDiploTech(stoi(match[2].str()))
-         else if(match[1].str().compare("mil") == 0)
-          countriesArray[arrPlacement].setMilTech(stoi(match[2].str()))
-        
-      
-
-      updateBalance(line, balance)
-    
-  
-
-
-void updateCountryIncome(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  double incomeArray[16]
-
-  string yearlyIncome = "income="
-  string lastMonthIncome = "lastmonthincometable="
-  regex incomeValue("([0-9]+\\.[0-9]3)")
-  smatch match
-
-  if(tagFile.is_open())
-    while(balance.size() > 1 and getline(tagFile, line))
-      trim_inplace(line)
-      if(line.compare(lastMonthIncome) == 0)
-
-        # push the income= bracket onto the stack
-        updateBalance(line, balance)
-
-        # pulls the income lists
-        getline(tagFile, line)
-
-        for(int i = 0 i < 16 i++)
-          regex_search(line, match, incomeValue)
-          incomeArray[i] = stod(match[1].str())
-          line = match.suffix().str()
-        
-
-        countriesArray[arrPlacement].setTax(incomeArray[0])
-        countriesArray[arrPlacement].setProduction(incomeArray[1])
-        countriesArray[arrPlacement].setTrade(incomeArray[2])
-        countriesArray[arrPlacement].setGold(incomeArray[3])
-        countriesArray[arrPlacement].setTariff(incomeArray[4])
-        countriesArray[arrPlacement].setVassalIncome(incomeArray[5])
-        countriesArray[arrPlacement].setHarborFees(incomeArray[6])
-        countriesArray[arrPlacement].setSubsidies(incomeArray[7])
-        countriesArray[arrPlacement].setWarReparation(incomeArray[8])
-        countriesArray[arrPlacement].setSpoilsOfWar(incomeArray[9])
-        countriesArray[arrPlacement].setCondottieriIncome(incomeArray[10])
-      
-
-      updateBalance(line, balance)
-    
-  
-
-
-void updateCountryScoreRank(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  double scoreRatingArray[3]
-
-  regex scoreValue("([0-9]+\\.[0-9]3)")
-  smatch match
-
-  if(tagFile.is_open())
-    # pulls the score list
-    getline(tagFile, line)
-
-    for(int i = 0 i < 3 i++)
-      regex_search(line, match, scoreValue)
-      scoreRatingArray[i] = stod(match[1].str())
-      line = match.suffix().str()
-    
-
-    countriesArray[arrPlacement].setAdminRating(scoreRatingArray[0])
-    countriesArray[arrPlacement].setDiploRating(scoreRatingArray[1])
-    countriesArray[arrPlacement].setMilRating(scoreRatingArray[2])
-  
-
-
-void updateCountryRegiment(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  string armyType
-  bool foundType = false
-
-  regex unitType("\\s*type=\"(.*)\"")
-  regex unitStrength("\\s*strength=([0|1]\\.[0-9]3)")
-  smatch match
-
-  if(tagFile.is_open())
-    while(balance.size() > 2 and getline(tagFile, line))
-      if(regex_match(line, match, unitType))
-        for(int i = 0 i < landUnitArraySize i++)
-
-          # Infantry is index 0-147
-          # Calvary is index 148-251
-          # Artillery is index 252-263, as of patch 1.17.x
-          if(match[1].str().compare(landUnitArray[i]) == 0 and i < 148)
-            armyType = "infantry"
-            foundType = true
-            break
-           else if(match[1].str().compare(landUnitArray[i]) == 0 and i >= 148 and i < 252)
-            armyType = "cavalry"
-            foundType = true
-            break
-           else if(match[1].str().compare(landUnitArray[i]) == 0 and i >= 252)
-            armyType= "artillery"
-            foundType = true
-            break
-          
-        
-       else if(regex_match(line, match, unitStrength) and foundType == true)
-        countriesArray[arrPlacement].armyCounter(armyType, stod(match[1].str()))
-      
-
-      updateBalance(line, balance)
-    
-  
-
-
-void updateCountryArmy(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  string regiment = "regiment="
-
-  if(tagFile.is_open())
-    while(balance.size() > 1 and getline(tagFile, line))
-      trim_inplace(line)
-      updateBalance(line, balance)
-      if(line.compare(regiment) == 0)
-        updateCountryRegiment(tagFile, line, arrPlacement, balance)
-      
-    
-  
-
-
-void updateCountryShipType(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  string shipType
-  bool foundType = false
-
-  regex unitType("\\s*type=\"(.*)\"")
-  smatch match
-
-  if(tagFile.is_open())
-    while(balance.size() > 2 and getline(tagFile, line))
-      if(regex_match(line, match, unitType))
-        for(int i = 0 i < navalUnitArraySize i++)
-
-          # bigShips is 0-5
-          # lightShips is 6-11
-          # Galley 12-17
-          # Transports 18-23, as of patch 1.17.x
-          if(match[1].str().compare(navalUnitArray[i]) == 0 and i < 6)
-            shipType = "bigShip"
-            foundType = true
-            break
-           else if(match[1].str().compare(navalUnitArray[i]) == 0 and i >= 6 and i < 12)
-            shipType = "lightShip"
-            foundType = true
-            break
-           else if(match[1].str().compare(navalUnitArray[i]) == 0 and i >= 12 and i < 19)
-            shipType= "galley"
-            foundType = true
-            break
-           else if(match[1].str().compare(navalUnitArray[i]) == 0 and i >= 18)
-            shipType= "transport"
-            foundType = true
-            break
-          
-        
-      
-
-      updateBalance(line, balance)
-    
-  
-  countriesArray[arrPlacement].navyCounter(shipType)
-
-
-void updateCountryNavy(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  string ship = "ship="
-
-  if(tagFile.is_open())
-    while(balance.size() > 1 and getline(tagFile, line))
-      trim_inplace(line)
-      updateBalance(line, balance)
-      if(line.compare(ship) == 0)
-        updateCountryShipType(tagFile, line, arrPlacement, balance)
-      
-    
-  
-
-
-void updateCountrySubject(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  regex tag("\"([A-Z]3)\"")
-  smatch match
-
-  if(tagFile.is_open())
-    while(balance.size() > 1 and getline(tagFile, line))
-      trim_inplace(line)
-      updateBalance(line, balance)
-      if(regex_match(line, match, tag))
-        countriesArray[arrPlacement].addSubject(match[1].str())
-        countryUpdate(match[1].str(), countriesArrayCounter)
-        # countriesArrayCounter++
-        # quicksort(countriesArray, 0, countriesArrayCounter-1, countriesArrayCounter-1)
-      
-    
-  
-
-
-void updateCountrySubjectValues(int arrPlacement)
-  double infantry = 0
-  double cavalry = 0
-  double artillery = 0
-  int bigShip = 0
-  int lightShip = 0
-  int galley = 0
-  int transport = 0
-
-  # Subject for loop, i = subject value
-  for(int i = 0 i < countriesArray[arrPlacement].getSubjectArrayCount() i ++)
-    # Country for loop, j = country value. Looking for the subject's object
-    for(int j = 0 j < countriesArrayCounter j ++)
-      if(countriesArray[j].getName().compare(countriesArray[arrPlacement].getSubjectName(i)) == 0)
-        infantry += countriesArray[j].getInfantry()
-        cavalry += countriesArray[j].getCavalry()
-        artillery += countriesArray[j].getArtillery()
-        bigShip += countriesArray[j].getBigShip()
-        lightShip += countriesArray[j].getLightShip()
-        galley += countriesArray[j].getGalley()
-        transport += countriesArray[j].getTransport()
-        break
-      
-    
-  
-
-  countriesArray[arrPlacement].setSubjectArmy(infantry, "infantry")
-  countriesArray[arrPlacement].setSubjectArmy(cavalry, "cavalry")
-  countriesArray[arrPlacement].setSubjectArmy(artillery, "artillery")
-  countriesArray[arrPlacement].setSubjectNavy(bigShip, "bigShip")
-  countriesArray[arrPlacement].setSubjectNavy(lightShip, "lightShip")
-  countriesArray[arrPlacement].setSubjectNavy(galley, "galley")
-  countriesArray[arrPlacement].setSubjectNavy(transport, "transport")
-
-
-void updateCountryDevelopment(ifstream& tagFile, int dev, int arrPlacement, stack<char>& balance)
-  countriesArray[arrPlacement].setDevelopment(dev)
-
-
-void updateCountryGPStatus(ifstream& tagFile, double gpScore, int arrPlacement, stack<char>& balance)
-  countriesArray[arrPlacement].setGreatPowerScore(gpScore)
-
-
-void updateCountryInstitution(ifstream& tagFile, string line, int arrPlacement, stack<char>& balance)
-  regex embracedValue("([0-9])")
-  smatch match
-
-  if(tagFile.is_open())
-    # gets institution numbers
-    getline(tagFile, line)
-    trim_inplace(line)
-    updateBalance(line, balance)
-
-    for(int i = 0 i < 7 i++)
-      regex_search(line, match, embracedValue)
-      countriesArray[arrPlacement].setEmbracedInstitutions(stoi(match[1].str()), i)
-      line = match.suffix().str()
-    
-    # pulls final bracket
-    getline(tagFile, line)
-    updateBalance(line, balance)
-  
-
-
-# Country initializers
-# Input tag must be a .txt
-void countryUpdate(string tag, int arrPlacement)
-  string file = "Countries/" + tag + ".txt"
-  string line
-  ifstream tagFile
-
-  string::size_type sz
-  string technology = "technology="
-  string ledgerIncome = "ledger="
-  string scoreRank = "score_rating="
-  string army = "army="
-  string navy = "navy="
-  string subject = "subjects="
-  string institution = "institutions="
-
-  regex development ("\\s*raw_development=([0-9]+)\\.[0-9]3")
-  regex maxManpower ("\\s*max_manpower=([0-9]+\\.[0-9]3)")
-  regex maxSailor ("\\s*max_sailors=([0-9]+\\.[0-9]3)")
-  regex score ("\\s*score=([0-9]+\\.[0-9]3)")
-  regex cardScore ("\\s*card_score=([0-9]+\\.[0-9]3)")
-  regex gpStatus("\\s*great_power_score=([0-9]+\\.[0-9]3)")
-  smatch match
-
-  # Stack to keep paranthesis balanced
-  stack<char> balance
-
-  countriesArray[arrPlacement].setName(tag.substr(0,3))
-  countriesArrayCounter++
-
-  tagFile.open(file)
-  if(tagFile.is_open())
-    while(getline(tagFile, line))
-
-      trim_inplace(line)
-
-      # this updateBalance will catch any matching statements bracket
-      # Do not add the bracket within the secondary function also
-      updateBalance(line, balance)
-
-      if(line.compare(technology) == 0)
-        updateCountryTech(tagFile, line, arrPlacement, balance)
-       else if(regex_match(line, match, development))
-        updateCountryDevelopment(tagFile, stoi(match[1].str()), arrPlacement, balance)
-       else if(regex_match(line, match, maxManpower))
-        countriesArray[arrPlacement].setMaxManpower(stod(match[1].str()))
-       else if(regex_match(line, match, maxSailor))
-        countriesArray[arrPlacement].setMaxSailor(stod(match[1].str()))
-       else if(line.compare(ledgerIncome) == 0)
-        updateCountryIncome(tagFile, line, arrPlacement, balance)
-       else if(regex_match(line, match, score))
-        countriesArray[arrPlacement].setScoreTotal(stod(match[1].str()))
-       else if(line.compare(scoreRank) == 0)
-        updateCountryScoreRank(tagFile, line, arrPlacement, balance)
-       else if(line.compare(army) == 0)
-        updateCountryArmy(tagFile, line, arrPlacement, balance)
-       else if(line.compare(subject) == 0)
-        # Updates a tag's subject array and creates the subjects object.
-        updateCountrySubject(tagFile, line, arrPlacement, balance)
-        updateCountrySubjectValues(arrPlacement)
-        arrPlacement = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag)
-       else if(line.compare(navy) == 0)
-        updateCountryNavy(tagFile, line, arrPlacement, balance)
-       else if(regex_match(line, match, gpStatus))
-         updateCountryGPStatus(tagFile, stod(match[1].str()), arrPlacement, balance)
-       else if(regex_match(line, match, cardScore))
-         countriesArray[arrPlacement].setCardScore(stod(match[1].str()))
-       else if(line.compare(institution) == 0)
-        updateCountryInstitution(tagFile, line, arrPlacement, balance)
-      
-    
-  
-  tagFile.close()
-
-  # Sort newly create object into proper place in the array
-  quicksort(countriesArray, 0, countriesArrayCounter-1, countriesArrayCounter-1)
-
-
-void fillCountryData()
-  # countriesArrayCounter = playerArrayCounter
-  for(int i = 0 i < playerArrayCounter i++)
-    countryUpdate(playerArray[i], countriesArrayCounter)
-  
-void printCountry( ofstream& output, int index){
-  if(output.is_open()){
-    output << "Name: " << countriesArray[index].getName() << endl
-    output << "Administration Rating: " << countriesArray[index].getAdminRating() << endl
-    output << "Diplomatic Rating: " << countriesArray[index].getDiploRating() << endl
-    output << "Military Rating: " << countriesArray[index].getMilRating() << endl
-    output << "Card Total: " << countriesArray[index].getCardScore() << endl
-    output << "Score Total: " << countriesArray[index].getScoreTotal() << endl << endl
-
-    output << "Taxation Income: " << countriesArray[index].getTax() << endl
-    output << "Production Income: " << countriesArray[index].getProduction() << endl
-    output << "Trade Income: " << countriesArray[index].getTrade() << endl
-    output << "Gold Income: " << countriesArray[index].getGold() << endl
-    output << "Tariff Income: " << countriesArray[index].getTariff() << endl
-    output << "Vassal Income: " << countriesArray[index].getVassalIncome() << endl
-    output << "Harbor Fees Income: " << countriesArray[index].getHarborFees() << endl
-    output << "Subsidies Income: " << countriesArray[index].getSubsidies() << endl
-    output << "War Reparations Income: " << countriesArray[index].getWarReparation() << endl
-    output << "Spoils of War Income: " << countriesArray[index].getSpoilsOfWar() << endl
-    output << "Condottieri Income: " << countriesArray[index].getCondottieriIncome() << endl
-    output << "Total Income: " << countriesArray[index].incomeTotal() << endl << endl
-
-    output << "Adm Tech: " << countriesArray[index].getAdminTech() << endl
-    output << "Dip Tech: " << countriesArray[index].getDiploTech() << endl
-    output << "Mil Tech: " << countriesArray[index].getMilTech() << endl
-    output << "Tech Total: " << countriesArray[index].techTotal() << endl
-    countriesArray[index].printInstitutions(output)
-    output << endl
-
-    output << "Infantry Amount: " << countriesArray[index].getInfantry() << endl
-    output << "Cavalry Amount: " << countriesArray[index].getCavalry() << endl
-    output << "Artillery Amount: " << countriesArray[index].getArtillery() << endl
-    output << "Subject Infantry: " << countriesArray[index].getSubjectArmy("infantry") << endl
-    output << "Subject Cavalry: " << countriesArray[index].getSubjectArmy("cavalry") << endl
-    output << "Subject Artillery: " << countriesArray[index].getSubjectArmy("artillery") << endl
-    output << "Army Strength Total: " << countriesArray[index].armyStrengthTotal() << endl
-    output << "Subject Army Total: " << countriesArray[index].getSubjectArmyTotal() << endl
-    output << "Max Manpower: " << countriesArray[index].getMaxManpower() << endl << endl
-
-    output << "Heavy Ship Amount: " << countriesArray[index].getBigShip() << endl
-    output << "Light Ship Amount: " << countriesArray[index].getLightShip() << endl
-    output << "Galley Amount: " << countriesArray[index].getGalley() << endl
-    output << "Transport Amount: " << countriesArray[index].getTransport() << endl
-    output << "Subject Heavy Ships: " << countriesArray[index].getSubjectNavy("bigShip") << endl
-    output << "Subject Light Ships: " << countriesArray[index].getSubjectNavy("lightShip") << endl
-    output << "Subject Galleys: " << countriesArray[index].getSubjectNavy("galley") << endl
-    output << "Subject Transports: " << countriesArray[index].getSubjectNavy("transport") << endl
-    output << "Naval Strength Total: " << countriesArray[index].navyTotal() << endl
-    output << "Subject Navy Total: " << countriesArray[index].getSubjectNavalTotal() << endl
-    output << "Max Sailor: " << countriesArray[index].getMaxSailor() << endl << endl
-
-    output << "Development: " << countriesArray[index].getDevelopment() << endl
-    output << "Great Power Score: " << countriesArray[index].getGreatPowerScore() << endl << endl
-
-    output << countriesArray[index].getName() << " subjects: " << endl
-    countriesArray[index].printSubjects(output)
-    output << endl << endl
-  }
-}
-
-void printSpecifiedCountry(string tag){
-  int index = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag)
-  ofstream output
-
-  //If the tag object is not yet made make it.
-  if(index == -1){
-    countryUpdate(tag, countriesArrayCounter)
-    int index = binarySearch(countriesArray, 0, countriesArrayCounter-1, tag)
-  }
-  output.open("TestData/specifiedOutput.txt")
-  if(output.is_open()){
-    printCountry(output, index)
-  }
-  output.close()
-}
-
-//Prints out all country object information
-void printAllCountries(){
-  ofstream output
-  output.open("TestData/output.txt")
-  if(output.is_open()){
-    for(int i = 0 i < countriesArrayCounter i ++){
-      printCountry(output, i)
-    }
-  }
-  output.close()
-}
-
-//for Testing, prints out Array of players
-void printPlayers(){
-  for(int i = 0 i < playerArrayCounter i++){
-    cout << "Player " << i << " is " << playerArray[i] << endl
-  }
-}
-
-void printInsitutionPenalties(){
-  cout << "Institution Penalties: "
-  for(int i = 0 i < 7 i++){
-    cout << institutionMalus[i] << " "
-  }
-  cout << endl << endl
-}
-
-void printCountriesArrayOrder(){
-  cout << "Country order: "
-  for(int i = 0 i < countriesArrayCounter i++){
-    cout << countriesArray[i].getName() << " "
-  }
-  cout << endl
-}
+  with open(saveFileName) as saveFile:
+    for currentLine, line in enumerate(saveFile):
+      print("Line {}; {}".format(currentLine, line))
+
+# List of all artillery unit types
+class Artillery(Enum):
+  HOUFNICE = 1
+  LARGE_CAST_IRON_BOMBARD = 2
+  CULVERIN = 3
+  PEDRERO = 4
+  LARGE_CAST_IRON_CANNON = 5
+  SMALL_CAST_IRON_CANNON = 6
+  CHAMBERED_DEMI_CANNON = 7
+  LEATHER_CANNON = 8
+  SWIVEL_CANNON = 9
+  COEHORN_MORTAR = 10
+  ROYAL_MORTAR = 11
+  FLYING_BATTERY = 12
+
+# List of all calvary unit types
+class Calvary(Enum):
+  AFRICAN_ABYSSINIAN_CAVALRY = 0
+  AFRICAN_ABYSSINIAN_LIGHT_CAVALRY = 1
+  AFRICAN_CUIRASSIER = 2
+  AFRICAN_DRAGOON = 3
+  AFRICAN_HUSSAR = 4
+  AFRICAN_MANDELAKU = 5
+  AFRICAN_MOSSI_HORSEMEN = 6
+  AFRICAN_SOMALI_CAVALRY = 7
+  AFRICAN_SWARM = 8
+  AFRICAN_TUAREG_CAVALRY = 9
+  AFSHARID_REFORMED = 10
+  ALI_BEY_REFORMED_INFRANTRY = 11
+  ASIAN_CHARGE_CAVALRY = 12
+  AUSTRIAN_HUSSAR = 13
+  BHONSLE_CAVALRY = 14
+  BRITISH_HUSSAR = 15
+  CENTRAL_AMERICAN_DRAGOON = 16
+  CENTRAL_AMERICAN_HORSEMEN = 17
+  CENTRAL_AMERICAN_HUSSAR = 18
+  CENTRAL_AMERICAN_RIFLE_CAVALRY = 19
+  CENTRAL_AMERICAN_SWARM = 20
+  CHEVAUCHEE = 21
+  CHINESE_DRAGOON = 22
+  CHINESE_STEPPE = 23
+  COMMANCHE_SWARM = 24
+  DRUZHINA_CAVALRY = 25
+  DURRANI_DRAGOON = 26
+  DURRANI_SWIVEL = 27
+  EAST_MONGOLIAN_STEPPE = 28
+  EASTERN_BOW = 29
+  EASTERN_KNIGHTS = 30
+  EASTERN_SKIMISHER = 31
+  EASTERN_UHLAN = 32
+  FRENCH_CARABINIER = 33
+  FRENCH_CARACOLLE = 34
+  FRENCH_CUIRASSIER = 35
+  FRENCH_DRAGOON = 36
+  HUNGARIAN_HUSSAR = 37
+  INDIAN_ARCHERS = 38
+  INDIAN_ELEPHANT = 39
+  INDIAN_SHOCK_CAVALRY = 40
+  JAPANESE_SAMURAI = 41
+  MAHARATHAN_CAVALRY = 42
+  MAMLUK_CAVALRY_CHARGE = 43
+  MAMLUK_MUSKET_CHARGE = 44
+  MANCHU_BANNER = 45
+  MONGOL_BOW = 46
+  MONGOL_MANSABDAR = 47
+  MONGOL_STEPPE = 48
+  MONGOL_SWARM = 49
+  MUGHAL_MUSKETEER = 50
+  MUSCOVITE_CARACOLLE = 51
+  MUSCOVITE_COSSACK = 52
+  MUSLIM_CAVALRY_ARCHERS = 53
+  MUSLIM_DRAGOON = 54
+  NAPOLEONIC_LANCERS = 55
+  NATIVE_INDIAN_HORSEMEN = 56
+  NORTH_AMERICAN_DRAGOON = 57
+  NORTH_AMERICAN_HORSEMEN = 58
+  NORTH_AMERICAN_HUSSAR = 59
+  NORTH_AMERICAN_RIFLE_CAVALRY = 60
+  NORTH_AMERICAN_SWARM = 61
+  OPEN_ORDER_CAVALRY = 62
+  OTTOMAN_LANCER = 63
+  OTTOMAN_MUSELLEM = 64
+  OTTOMAN_REFORMED_SPAHI = 65
+  OTTOMAN_SPAHI = 66
+  OTTOMAN_TIMARIOT = 67
+  OTTOMAN_TOPRAKLI_DRAGOON = 68
+  OTTOMAN_TOPRAKLI_HIT_AND_RUN = 69
+  PERSIAN_CAVALRY_CHARGE = 70
+  POLISH_HUSSAR = 71
+  POLISH_WINGED_HUSSAR = 72
+  PRUSSIAN_UHLAN = 73
+  QIZILBASH_CAVALRY = 74
+  RAJPUT_HILL_FIGHTERS = 75
+  REFORMED_ASIAN_CAVALRY = 76
+  REFORMED_MANCHU_RIFLE = 77
+  REFORMED_MUGHAL_MANSABDAR = 78
+  RUSSIAN_COSSACK = 79
+  RUSSIAN_CUIRASSIER = 80
+  RUSSIAN_LANCER = 81
+  SHAYBANI = 82
+  SHWARZE_REITER = 83
+  SIKH_RIFLE = 84
+  SIOUX_DRAGOON = 85
+  SLAVIC_STRADIOTI = 86
+  SOUTH_AMERICAN_DRAGOON = 87
+  SOUTH_AMERICAN_HORSEMEN = 88
+  SOUTH_AMERICAN_HUSSAR = 89
+  SOUTH_AMERICAN_RIFLE_CAVALRY = 90
+  SOUTH_AMERICAN_SWARM = 91
+  STEPPE_CAVALRY = 92
+  STEPPE_LANCERS = 93
+  STEPPE_MOUNTED_RAIDERS = 94
+  STEPPE_RIDERS = 95
+  STEPPE_UHLANS = 96
+  SWEDISH_ARME_BLANCHE = 97
+  SWEDISH_GALLOP = 98
+  TARTAR_COSSACK = 99
+  TOPCHIS_ARTILLERY = 100
+  WESTERN_MEDIEVAL_KNIGHTS = 101
+  ZAPOROGHIAN_COASSACK = 102
+
+# List of all infantry unit types
+class Infantry(Enum):
+  ADAL_GUERILLA_WARFARE = 0
+  ADAL_GUNPOWDER_WARFARE = 1
+  AFRICAN_CLUBMEN = 2
+  AFRICAN_HILL_WARFARE = 3
+  AFRICAN_SPEARMEN = 4
+  AFRICAN_WESTERN_FRANCHISE_WARFARE = 5
+  AFSHARID_REFORMED_INFRANTRY = 6
+  ALGONKIN_TOMAHAWK_CHARGE = 7
+  AMERICAN_WESTERN_FRANCHISE_WARFARE = 8
+  ANGLOFRENCH_LINE = 9
+  APACHE_GUERILLA = 10
+  ASIAN_ARQUEBUSIER = 11
+  ASIAN_MASS_INFRANTRY = 12
+  ASIAN_MUSKETEER = 13
+  AUSTRIAN_GRENZER = 14
+  AUSTRIAN_JAEGER = 15
+  AUSTRIAN_TERCIO = 16
+  AUSTRIAN_WHITE_COAT = 17
+  AZTEC_GUNPOWDWER_WARFARE = 18
+  AZTEC_HILL_WARFARE = 19
+  AZTEX_TRIBAL_WARFARE = 20
+  BANTU_GUNPOWDER_WARFARE = 21
+  BANTU_PLAINS_WARFARE = 22
+  BANTU_TRIBAL_WARFARE = 23
+  BARDICHE_INFANTRY = 24
+  BHONSLE_INFRANTRY = 25
+  BRITISH_REDCOAT = 26
+  BRITISH_SQUARE = 27
+  CHINESE_FOOTSOLDIER = 28
+  CHINESE_LONGSPEAR = 29
+  CREEK_ARQUEBUSIER = 30
+  DURRANI_RIFLED_MUSKETEER = 31
+  DUTCH_MARUICIAN = 32
+  EAST_ASIAN_SPEARMEN = 33
+  EASTERN_CARABINIER = 34
+  EASTERN_MEDIEVAL_INFANTRY = 35
+  EASTERN_MILITIA = 36
+  ETHIOPIAN_GUERILLA_WARFARE = 37
+  ETHIOPIAN_GUNPOWDER_WARFARE = 38
+  ETHIOPIAN_MOUNTAIN_WARFARE = 39
+  FRENCH_BLUECOAT = 40
+  FRENCH_IMPULSE = 41
+  GAELIC_FREE_SHOOTER = 42
+  GAELIC_GALLOGLAIGH = 43
+  GAELIC_MERCENARY = 44
+  GERMANIZED_PIKE = 45
+  HALBERD_INFANTRY = 46
+  HAN_BANNER = 47
+  HURON_ARQUEBUSIER = 48
+  INCA_MOUNTAIN_WARFARE = 49
+  INCAN_AXEMEN = 50
+  INCAN_GUERILLA_WARFARE = 51
+  INCAN_SLINGSHOTS = 52
+  INDIAN_ARQUEBUSIER = 53
+  INDIAN_FOOTSOLDIER = 54
+  INDIAN_RIFLE = 55
+  IRISH_CHARGE = 56
+  IROQUIS_RIFLE_SCOUT = 57
+  IROQUOIS_RIFLE_SCOUT = 58
+  ITALIAN_CONDOTTA = 59
+  JAPANESE_ARCHER = 60
+  JAPANESE_FOOTSOLDIER = 61
+  MAHARATHAN_GUERILLA_WARFARE = 62
+  MALI_TRIBAL_WARFARE = 63
+  MAMLUK_ARCHER = 64
+  MAMLUK_DUEL = 65
+  MAYA_FOREST_WARFARE = 66
+  MAYA_GUERILLA_WARFARE = 67
+  MAYA_GUNPWODER_WARFARE = 68
+  MAYA_TRIBAL_WARFARE = 69
+  MESOAMERICAN_SPEARMEN = 70
+  MEXICAN_GUERILLA_WARFARE = 71
+  MIXED_ORDER_INFANTRY = 72
+  MONGOL_BOW = 73
+  MUSCOVITE_MUSKETEER = 74
+  MUSCOVITE_SOLDATY = 75
+  MUSLIM_MASS_INFANTRY = 76
+  NAPOLEONIC_SQUARE = 77
+  NATIVE_CLUBMEN = 78
+  NATIVE_INDIAN_ARCHERS = 79
+  NATIVE_INDIAN_MOUNTAIN_WARFARE = 80
+  NATIVE_INDIAN_TRIBAL_WARFARE = 81
+  NIGER_KONGOLESE_FOREST_WARFARE = 82
+  NIGER_KONGOLESE_GUERILLA_WARFARE = 83
+  NIGER_KONGOLESE_GUNPOWDER_WARFARE = 84
+  NIGER_KONGOLESE_TRIBAL_WARFARE = 85
+  OTTOMAN_AZAB = 86
+  OTTOMAN_JANISSARY = 87
+  OTTOMAN_NEW_MODEL = 88
+  OTTOMAN_NIZAMI_CEDID = 89
+  OTTOMAN_REFORMED_JANISSARY = 90
+  OTTOMAN_SEKBAN = 91
+  OTTOMAN_YAYA = 92
+  PERSIAN_FOOTSOLDIER = 93
+  PERSIAN_RIFLE = 94
+  PERSIAN_SHAMSHIR = 95
+  PERUVIAN_GUERILLA_WARFARE = 96
+  POLISH_MUSKETEER = 97
+  POLISH_TERCIO = 98
+  PRUSSIAN_DRILL = 99
+  PRUSSIAN_FREDERICKIAN = 100
+  PUEBLO_AMBUSH = 101
+  RAJPUT_MUSKETEERS = 102
+  REFORMED_ASIAN_MUSKETEER = 103
+  REFORMED_MUGHAL_MUSKETEER = 104
+  REFORMED_STEPPE_RIFLES = 105
+  REFORMED_WESTERNIZED_INCAN = 106
+  RUSSIAN_GREEN_COAT = 107
+  RUSSIAN_MASS = 108
+  RUSSIAN_PRETRINE = 109
+  SAXON_INFANTRY = 110
+  SCOTTISH_HIGHLANDER = 111
+  SIKH_HIT_AND_RUN = 112
+  SONGHAI_TRIBAL_WARFARE = 113
+  SOUTH_AMERICAN_ARQEBUSIER = 114
+  SOUTH_AMERICAN_FOREST_WARFARE = 115
+  SOUTH_AMERICAN_GUNPOWDER_WARFARE = 116
+  SOUTH_AMERICAN_REFORMED_GUNPOWDER_WARFARE = 117
+  SOUTH_AMERICAN_SPEARMEN = 118
+  SOUTH_AMERICAN_WARFARE = 119
+  SOUTH_INDIAN_MUSKETEER = 120
+  SPANISH_TERCIO = 121
+  STEPPE_FOOTMEN = 122
+  STEPPE_INFANTRY = 123
+  STEPPE_MUSKETEERS = 124
+  STEPPE_RAIDERS = 125
+  STEPPE_RIFLES = 126
+  SWEDISH_CAROLINE = 127
+  SWEDISH_GUSTAVIAN = 128
+  SWISS_LANDSKNECHTEN = 129
+  TIPU_SULTAN_ROCKET = 130
+  TOFONGSHIS_MUSKETEER = 131
+  WESTERN_LONGBOW = 132
+  WESTERN_MEDIEVAL_INFANTRY = 133
+  WESTERN_MEN_AT_ARMS = 134
+  WESTERNIZED_ADAL = 135
+  WESTERNIZED_AZTEC = 136
+  WESTERNIZED_BANTU = 137
+  WESTERNIZED_ETHIOPIAN = 138
+  WESTERNIZED_INCAN = 139
+  WESTERNIZED_MAYAN = 140
+  WESTERNIZED_NIGER_KONGOLESE = 141
+  WESTERNIZED_SOUTH_AMERICAN = 142
+  WESTERNIZED_ZAPOTEC = 143
+  ZAPOTEC_GUNPOWDER_WARFARE = 144
+  ZAPOTEC_PLAINS_WARFARE = 145
+  ZAPOTEC_TRIBAL_WARFARE = 146
+  ZULU_CHEST_AND_HORNS = 147
+
+# List of all transport ship types
+class Trasport(Enum):
+  COG = 1
+  EASTINDIAMAN = 2
+  FLUTE = 3
+  TRABAKUL = 4
+  MERCHANTMAN = 5
+  WAR_CANOE = 6
+  BRIG = 7
+
+# List of all galley ship types
+class Galley(Enum):
+  ARCHIPELAGO_FRIGATE = 1
+  CHEBECK = 2
+  GALIOT = 3
+  GALLEASS = 4
+  GALLEY = 5
+  WAR_GALLEY = 6
+
+# List of all light ship ship types
+class Light_Ship(Enum):
+  BARQUE = 1
+  CARAVEL = 2
+  EARLY_FRIGATE = 3
+  FRIGATE = 4
+  GREAT_FRIGATE = 5
+  HEAVY_FRIGATE = 6
+
+# List of all heavy ship ship types
+class Heavy_Ship(Enum):
+  CARRACK = 1
+  EARLY_CARRACK = 2
+  GALLEON = 3
+  THREEDECKER = 4
+  TWODECKER = 5
+  WARGALLEON = 6
+  MERCHANTMAN = 7
+
+#############################
+# Starts Program
+#############################
+main(sys.argv[1:])

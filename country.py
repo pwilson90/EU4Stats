@@ -7,6 +7,7 @@ class Country:
   # military
   # @todo inf, cav, art should be counted in the thousands. I.e. int * 1000 (maybe these should actually be doubles)
   infantry: float
+  infantry : int
   cavalry: float 
   artillery: float
   army_force_limits: int
@@ -93,8 +94,9 @@ class Country:
     elif (unit_type.compare("artillery") == 0):
       self.artillery += unit_strength
     else:
-      # write to log that an unidentified unit_type came through.
       return
+      # write to log that an unidentified unit_type came through.
+      
 
   def naval_counter(self, unit_type: str) -> None:
     if (unit_type.compare("bigShip") == 0):
@@ -106,8 +108,8 @@ class Country:
     elif (unit_type.compare("transport") == 0):
       self.transport += 1
     else:
-      # write to log that an unidentified unit_type came through.
       return
+      # write to log that an unidentified unit_type came through.
 
   #### SUBJECT FUNCTIONS #####
   # Countries tag should be added, not the .txt file. I.E. ENG/SWE not ENG.txt/SWE.txt
@@ -122,8 +124,8 @@ class Country:
     elif (unit_type.compare("artillery") == 0):
       return self.subjects_artillery
     else:
-      # write to log that an unidentified unit_type came through.
       return
+      # write to log that an unidentified unit_type came through.
   
   def subject_total_army_strength(self) -> float:
     return self.subjects_infantry + self.subjects_cavalry + self.subjects_artillery
@@ -137,5 +139,4 @@ class Country:
       return self.subjects_galley
     elif(ship_type.compare("transport") == 0):
       return self.subjects_transport
-    else:
-      return
+    # else:
